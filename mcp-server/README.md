@@ -1,24 +1,20 @@
-# Hausbank Plus MCP Server
+# CB-Connect MCP Server
 
-TypeScript MCP server (Streamable HTTP) that will call Deutsche Bank / Hausbank Plus APIs with **mTLS** and **request signing**.
+Port of Deutsche Bank CB-Connect connectors from dbHealthflow.
 
-## Status
-
-Scaffold: tools return structured `not_implemented` until OpenAPI specs and the signing framework arrive.
-
-## Run locally
+## Run
 
 ```bash
 cp ../.env.example .env
 npm install
 npm run dev
-# → http://localhost:8787/mcp
 ```
 
-## Certificate providers
+## Layout
 
-Set `CERT_PROVIDER=file` or `azure-keyvault`. See `../docs/certificates.md`.
+- `src/cb-connect/` — ported HealthFlow API layer (mTLS, signing, parsers, builders)
+- `src/azure-key-vault/` — optional Key Vault RSA signing
+- `src/operations.ts` — MCP-facing façade
+- `src/tools/` — MCP tool registration
 
-## Tool surface
-
-See `src/tools/index.ts`. Domains: balances, statements, zipa, vop, approvals, swift, fx.
+Credentials: `CBCON_*` env vars (same names as HealthFlow).

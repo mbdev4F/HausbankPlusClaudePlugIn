@@ -5,30 +5,24 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { registerTools } from "./tools/index.js";
 import { loadConfig } from "./config.js";
-import { createCertificateProvider } from "./auth/certificate.js";
-import { createSigningProvider } from "./auth/signing.js";
-import { HausbankApiClient } from "./clients/hausbank.js";
 
 config();
 
 const appConfig = loadConfig();
-const certProvider = createCertificateProvider(appConfig);
-const signingProvider = createSigningProvider(appConfig);
-const api = new HausbankApiClient(appConfig, certProvider, signingProvider);
 
 const mcp = new McpServer({
-  name: "hausbank-plus",
-  version: "0.1.0",
+  name: "db-cb-connect",
+  version: "0.2.0",
 });
 
-registerTools(mcp, api);
+registerTools(mcp);
 
 const port = appConfig.port;
 
 const httpServer = createServer(async (req, res) => {
   if (req.url === "/healthz") {
     res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ ok: true, service: "hausbank-plus-mcp" }));
+    res.end(JSON.stringify({ ok: true, service: "db-cb-connect-mcp" }));
     return;
   }
 
@@ -56,5 +50,7 @@ const httpServer = createServer(async (req, res) => {
 });
 
 httpServer.listen(port, () => {
-  console.log(`[hausbank-plus-mcp] listening on :${port} (cert=${appConfig.certProvider}, signing=${appConfig.signingMode})`);
+  console.log(
+    `[db-cb-connect-mcp] listening on :${port} (certProvider=${appConfig.certProvider})`
+  );
 });

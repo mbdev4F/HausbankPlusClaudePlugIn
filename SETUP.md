@@ -1,12 +1,8 @@
-# Plugin setup guide
+# Plugin setup
 
-This file helps Claude walk users through first-time configuration of Hausbank Plus.
-
-1. Install / enable this plugin from the GitHub repo.
-2. Start or deploy `mcp-server/` and set `HAUSBANK_PLUS_MCP_URL`.
-3. Configure certificates (`CERT_PROVIDER=file` for sandbox, `azure-keyvault` for production).
-4. Call MCP tool `probe_auth_setup` to verify providers.
-5. Prefer read-only tools (`get_realtime_balance`) before enabling payment flows.
-6. Wait for OpenAPI specs + signing sample before production use.
+1. Start `mcp-server` with `CBCON_*` credentials.
+2. Set `CB_CONNECT_MCP_URL` and `CB_CONNECT_MCP_TOKEN`.
+3. Call `probe_auth_setup` then `probe_token_and_health`.
+4. Use read-only tools before Instant Payment / FX4Cash.
 
 See `skills/setup/SKILL.md` and `docs/certificates.md`.

@@ -1,24 +1,13 @@
 ---
 name: fx-forward
-description: This skill should be used when the user wants to initiate an FX forward, Devisentermingeschäft, currency forward booking, or check FX forward status in Hausbank Plus / Deutsche Bank global markets connectivity.
+description: This skill should be used when the user wants FX4Cash initiation, value-date evaluation, or FX4Cash status via Deutsche Bank CB-Connect (cross-border FX-for-cash, not a classic FX forward contract).
 ---
 
-# FX Forward Initiation
+# FX4Cash
 
-## Goal
+Note: This maps to CB-Connect **FX4Cash**, not a traditional FX forward deal.
 
-Initiate an FX forward and track its status.
-
-## Workflow
-
-1. Collect: buy/sell currencies, notional, rate type (spot+points / outright if offered), value/fix date, accounts, entity.
-2. Show risk summary (currency pair, amounts, dates) and get explicit confirmation.
-3. Call `initiate_fx_forward`.
-4. Store returned `fxDealId` / reference.
-5. Optionally `get_fx_forward_status` for confirmation/settlement state.
-
-## Rules
-
-- Destructive: never book without confirmation.
-- No invented market rates — only API-returned or user-provided rates as the contract requires.
-- Stub → request FX Forward API spec.
+1. Optionally `evaluate_fx4cash_value_date` first.
+2. Confirm amounts/currencies/accounts.
+3. Call `initiate_fx4cash`.
+4. Track with `get_fx4cash_status` (debtor IBAN + endToEndIdentification).

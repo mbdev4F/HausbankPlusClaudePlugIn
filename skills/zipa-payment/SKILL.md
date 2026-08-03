@@ -1,26 +1,12 @@
 ---
 name: zipa-payment
-description: This skill should be used when the user wants to create a ZIPA payment, initiate a payment draft in Hausbank Plus, or prepare a payment that will later go through Verification of Pay and multi-stage approval to Deutsche Bank.
+description: This skill should be used when the user wants to create or send a SEPA Instant Transfer (ZIPA-equivalent) via Deutsche Bank CB-Connect.
 ---
 
-# ZIPA Payment Creation
+# SEPA Instant Payment (ZIPA)
 
-## Goal
-
-Create a ZIPA payment draft ready for VoP and multi-stage approval — not a silent send to the bank.
-
-## Mandatory sequence
-
-1. Collect payment data: debtor account, creditor name/IBAN, amount, currency, remittance, execution date, urgency.
-2. Validate completeness; ask for missing fields.
-3. Call `create_zipa_payment` → keep returned `paymentId`.
-4. **Always** continue with Verification of Pay (`verification-of-pay` skill) before approval.
-5. Do **not** call `send_payment_to_bank` from this skill.
-
-## Confirmation
-
-Before calling `create_zipa_payment`, show a clear summary and get explicit user confirmation for amount, IBAN, and beneficiary.
-
-## Stub awareness
-
-If MCP returns not-implemented, stop and request the ZIPA Payments API spec.
+1. Collect debtor/creditor name, IBAN, BIC, amount, currency, remittance.
+2. Confirm details with the user.
+3. Run VoP first (`verification-of-pay` skill / `verify_payee`).
+4. Call `initiate_instant_payment` only after confirmation + VoP.
+5. Track with `get_instant_payment_status`.

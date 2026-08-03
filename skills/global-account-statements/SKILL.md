@@ -1,23 +1,11 @@
 ---
 name: global-account-statements
-description: This skill should be used when the user requests account statements, Kontoauszüge, transaction history, or global statement retrieval across Deutsche Bank / Postbank First / Hausbank Plus accounts.
+description: This skill should be used when the user requests CB-Connect account statements or CAMT retrieval for a date range.
 ---
 
-# Global Account Statements
+# Account Statements
 
-## Goal
-
-Pull account statements across the global account landscape.
-
-## Workflow
-
-1. Collect: accountId/IBAN, date from/to, statement format if relevant (camt.053, PDF, JSON — whatever the API supports once specified).
-2. Call `get_account_statement`.
-3. Summarize totals (credits/debits/closing) and offer drill-down on bookings.
-4. For large ranges, paginate via MCP tool parameters; do not dump raw megabyte payloads into chat.
-
-## Rules
-
-- Read-only.
-- Flag missing dates or ambiguous accounts before calling tools.
-- Stub responses → request Statements OpenAPI/Postman from the user.
+1. Collect branch, currency, account id, dateFrom, dateTo, optional type (EOD/INT).
+2. Call `request_account_statement` → keep `serviceRequestId`.
+3. Call `load_account_statement` with that id.
+4. Summarize; do not dump huge CAMT payloads unless asked.

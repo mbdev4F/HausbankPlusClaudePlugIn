@@ -1,25 +1,11 @@
 ---
 name: verification-of-pay
-description: This skill should be used when the user must run Verification of Pay (VoP), payee verification, IBAN-name check, or confirm beneficiary matching before approving or sending a Hausbank Plus / Deutsche Bank payment.
+description: This skill should be used when running Verification of Payee (VoP) before approving or sending a CB-Connect SEPA Instant payment.
 ---
 
 # Verification of Pay (VoP)
 
-## Goal
-
-Verify that creditor name and account details match before any approval or bank submission.
-
-## Workflow
-
-1. Require a `paymentId` (from ZIPA creation) or explicit creditor details.
+1. Require payee name, payee IBAN, debtor IBAN.
 2. Call `verify_payee`.
-3. Interpret result:
-   - **match** → proceed to multi-stage approval
-   - **close match / partial** → show mismatch details; require explicit user decision
-   - **no match** → block approval/send; offer correct-and-retry
-4. Persist VoP reference/result id with the payment when the API provides one.
-
-## Rules
-
-- Never skip VoP for payments destined to Deutsche Bank via this plugin.
-- Never “approve despite no-match” unless the user explicitly overrides and the API allows it — document the override in the reply.
+3. Match → continue; close/no-match → stop or require explicit override.
+4. Never skip VoP before `initiate_instant_payment`.

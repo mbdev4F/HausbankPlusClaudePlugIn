@@ -1,7 +1,7 @@
 {
-  "name": "hausbank-plus",
-  "version": "0.1.0",
-  "description": "Hausbank Plus Connector für Claude: Echtzeit-Salden, globale Kontoauszüge, ZIPA-Zahlungen mit Verification of Pay, mehrstufiger Freigabe und Anbindung an Deutsche Bank / Postbank First inkl. SWIFT-Status und FX-Forwards.",
+  "name": "db-cb-connect",
+  "version": "0.2.0",
+  "description": "Deutsche Bank CB-Connect Connector für Claude: Echtzeit-Salden, Kontoauszüge (CAMT), SEPA Instant Transfer, Verification of Pay, SWIFT GPI Status und FX4Cash — mit mTLS und HTTP-Signatur.",
   "author": {
     "name": "mbdev4F"
   },
@@ -11,12 +11,12 @@
   "keywords": [
     "banking",
     "deutsche-bank",
-    "postbank",
-    "hausbank-plus",
-    "payments",
-    "zipa",
+    "cb-connect",
+    "sepa",
+    "instant-payment",
+    "vop",
     "swift",
-    "fx",
+    "fx4cash",
     "mcp"
   ]
 }

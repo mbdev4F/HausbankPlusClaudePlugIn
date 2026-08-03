@@ -1,106 +1,57 @@
-# Hausbank Plus — Claude Plugin
+# Deutsche Bank CB-Connect — Claude Plugin
 
-Claude-Plugin + MCP-Connector für **Hausbank Plus** mit Echtzeitanbindung an das globale Setup der **Deutschen Bank** (inkl. **Postbank First**).
+Claude-Plugin + MCP-Server für **Deutsche Bank CB-Connect (BaaS)**.
 
-Dieses Repo ist ein **Scaffold (v0.1)**. API-Details folgen schrittweise per Postman/Swagger; Signierungs-Framework und Zertifikate kommen in späteren Iterationen.
+Konnektoren (HTTP, mTLS, HTTP-Signatur, Parser, Builder) stammen aus dem produktiven TypeScript-Code von **dbHealthflow** (`lib/native-bank-connectivity`), entkoppelt vom Next.js-Team-Store.
 
-## Architektur-Entscheidung: MCP + Plugin (beides)
+## Architektur
 
-Nach [Anthropic Best Practice](https://claude.com/docs/connectors/building/what-to-build):
-
-| Baustein | Rolle |
+| Schicht | Rolle |
 | --- | --- |
-| **Remote MCP-Server** | Claude ruft Tools auf (Saldo, Auszüge, ZIPA, VoP, Freigabe, SWIFT, FX). Hier leben **mTLS**, Zertifikat und **Request-Signing**. |
-| **Plugin + Skills** | Claude kennt die **Workflows** (mehrstufige Freigabe, VoP vor Versand, Statusabfragen). |
-
-**Warum nicht nur Skills?** Die Bank-APIs erfordern Client-Zertifikat und komplexe Signierung. Das gehört nicht in den Chat-Kontext, sondern in Server-Code. Skills allein können mTLS nicht sicher halten.
-
-**Warum nicht nur MCP?** Ohne Skills rät Claude bei Freigabe-/VoP-/ZIPA-Abläufen. Skills machen daraus einen fachlichen Specialist.
+| **MCP-Server** (`mcp-server/`) | Tools für Saldo, Statements, VoP, SEPA Instant, SWIFT GPI, FX4Cash |
+| **Plugin Skills** | Workflows (VoP vor Versand, Freigabe-Reihenfolge) |
+| **CB-Connect Lib** (`mcp-server/src/cb-connect/`) | Portierte HealthFlow-Konnektoren |
 
 ```
-┌─────────────┐     Skills / Commands      ┌──────────────────┐
-│ Claude.ai / │ ─────────────────────────► │ hausbank-plus    │
-│ Cowork /    │                            │ Plugin           │
-│ Claude Code │ ◄─── MCP tools (HTTP) ──── │ .mcp.json        │
-└─────────────┘                            └────────┬─────────┘
-                                                    │
-                                           ┌────────▼─────────┐
-                                           │ MCP Server       │
-                                           │ (mTLS + Signing) │
-                                           └────────┬─────────┘
-                                                    │
-                              ┌─────────────────────▼─────────────────────┐
-                              │ Deutsche Bank Global / Postbank First API │
-                              └───────────────────────────────────────────┘
+Claude ──Skills──► Plugin ──HTTP MCP──► mcp-server ──mTLS+Sign──► api.sbx.baas.db.com / Prod
 ```
 
-## Capabilities (geplant)
+## Tools
 
-| Skill / Tool-Gruppe | Status |
+| Tool | Domäne |
 | --- | --- |
-| Echtzeit-Saldo (Realtime Balance) | Scaffold |
-| Globale Kontoauszüge (Account Statements) | Scaffold |
-| ZIPA-Zahlung anlegen | Scaffold |
-| Verification of Pay (VoP) | Scaffold |
-| Mehrstufige Freigabe → Versand an Deutsche Bank | Scaffold |
-| SWIFT-Status ausgeführter Zahlungen | Scaffold |
-| FX-Forward initiieren | Scaffold |
+| `probe_auth_setup` / `probe_token_and_health` | Diagnose |
+| `get_realtime_balance` | Saldo |
+| `request_account_statement` / `load_account_statement` | CAMT Statements |
+| `verify_payee` | Verification of Pay |
+| `initiate_instant_payment` / `get_instant_payment_status` | SEPA Instant (ZIPA-Äquivalent) |
+| `get_swift_payment_status` | SWIFT GPI for Corporates |
+| `initiate_fx4cash` / `get_fx4cash_status` / `evaluate_fx4cash_value_date` | FX4Cash |
 
-## Repository-Struktur
+Mehrstufige Freigabe bleibt Skill-/Prozess-Ebene (wie in HealthFlow ABAC); die Bank-APIs sind Instant + VoP + Status.
 
-```
-.claude-plugin/plugin.json   # Plugin-Manifest
-.mcp.json                    # MCP-Connector-Referenz (URL via Env)
-skills/                      # Workflow-Wissen für Claude
-commands/                    # Slash-Commands
-agents/                      # Spezial-Agent für Zahlungsabläufe
-mcp-server/                  # TypeScript MCP-Server (Stubs)
-docs/                        # Architektur, Zertifikate, API-Specs
-```
-
-## Zertifikate: Datei vs. Azure Key Vault
-
-| Umgebung | Empfehlung |
-| --- | --- |
-| **Lokal / Sandbox** | Zertifikat + Key als Datei unter `./certs/` (gitignored), Pfade über `.env`. Schnell zum Testen. |
-| **Produktion / geteilter MCP** | **Azure Key Vault** (oder vergleichbarer HSM/KMS). Private Key verlässt den Vault nicht; Signierung über Key Vault Crypto API bzw. Certificate + Managed Identity. |
-
-**Tipp:** Starte mit `CERT_PROVIDER=file`, baue Signing ein, wenn du den Code-Ausschnitt lieferst. Für den produktiven Remote-MCP-Server auf `azure-keyvault` umstellen — niemals Bank-Client-Keys auf App-Disk in Production ablegen.
-
-Details: [docs/certificates.md](docs/certificates.md)
-
-## Schnellstart (Scaffold)
+## Schnellstart
 
 ```bash
-# 1. Repo klonen
-git clone https://github.com/mbdev4F/HausbankPlusClaudePlugIn.git
-cd HausbankPlusClaudePlugIn
-
-# 2. MCP-Server (noch Stubs — APIs folgen)
 cd mcp-server
 cp ../.env.example .env
+# CBCON_* Credentials + PKCS#12 Base64 eintragen
 npm install
 npm run dev
-
-# 3. Plugin in Claude Code testen
-claude --plugin-dir ..
 ```
 
-Plugin-Setup-Anleitung für Claude: Skill `setup` bzw. [skills/setup/SKILL.md](skills/setup/SKILL.md).
+Plugin: `claude --plugin-dir .` im Repo-Root. Env: `CB_CONNECT_MCP_URL`, `CB_CONNECT_MCP_TOKEN`.
 
-## Nächste Schritte (mit dir)
+## Zertifikate
 
-1. Postman-/Swagger-Specs → `docs/api-specs/`
-2. Signing-/mTLS-Codebeispiel → `mcp-server/src/auth/signing.ts`
-3. Tools konkret verdrahten (nicht mehr Stub)
-4. Remote-Deploy (z. B. Azure Container Apps) + Key Vault
-5. Optional: Submission an Claude Plugin Directory / Connectors Directory
+| Phase | Empfehlung |
+| --- | --- |
+| Sandbox | `CBCON_CERTIFICATEBASE64` + Passwort, ggf. `CBCON_TLS_INSECURE=true` |
+| Produktion | Azure Key Vault Signing (`AZURE_KEY_VAULT_*`) — Code unter `src/azure-key-vault/` + `cb-connect-keyvault-signer.ts` |
 
-## Sicherheit
+## Herkunft
 
-- Keine Secrets im Git
-- Schreibende Tools (`create_zipa_payment`, `approve_payment`, `initiate_fx_forward`) sind als **destructive** markiert
-- Mehrstufige Freigabe und VoP sind in Skills **Pflichtschritte** vor dem Versand
+Portiert aus `C:\banqr_dev\dbHealthflow\lib\native-bank-connectivity` (ohne Team-Store, UI, ABAC).
 
 ## Lizenz
 

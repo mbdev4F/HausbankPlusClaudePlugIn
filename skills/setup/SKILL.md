@@ -1,26 +1,14 @@
 ---
 name: setup
-description: This skill should be used when the user installs or configures the Hausbank Plus Claude plugin, connects the MCP server, sets certificate providers, or asks how to get started with Deutsche Bank / Postbank First connectivity.
+description: This skill should be used when the user installs or configures the Deutsche Bank CB-Connect Claude plugin, connects the MCP server, sets CBCON credentials, or asks how to get started.
 ---
 
-# Hausbank Plus — Setup
+# CB-Connect — Setup
 
-Guide the user through configuring the Hausbank Plus connector. Do not invent API endpoints; the MCP server is stubbed until OpenAPI specs arrive.
+1. Ensure MCP server is running (`mcp-server`: `npm run dev`).
+2. Set `CB_CONNECT_MCP_URL` + `CB_CONNECT_MCP_TOKEN`.
+3. Configure `CBCON_*` credentials and PKCS#12 (`CBCON_CERTIFICATEBASE64`).
+4. Call `probe_auth_setup`, then `probe_token_and_health`.
+5. Prefer read-only tools (`get_realtime_balance`) before payment tools.
 
-## Steps
-
-1. Confirm the plugin is loaded (Claude Code: `--plugin-dir` or marketplace install).
-2. Ensure the MCP server is reachable:
-   - Local: `cd mcp-server && npm install && npm run dev`
-   - Remote: set `HAUSBANK_PLUS_MCP_URL` and `HAUSBANK_PLUS_MCP_TOKEN`
-3. Certificate setup:
-   - Dev: `CERT_PROVIDER=file` + paths in `.env` (see repo `.env.example`)
-   - Prod: `CERT_PROVIDER=azure-keyvault` + Managed Identity (see `docs/certificates.md`)
-4. Verify read-only connectivity first (`get_realtime_balance` / `list_global_accounts`) before enabling payment tools.
-5. Remind the user that signing is still a stub until they provide the signing framework code.
-
-## References
-
-- `docs/architecture.md`
-- `docs/certificates.md`
-- `docs/api-specs/README.md`
+Sandbox TLS tip: `CBCON_TLS_INSECURE=true` if Node does not trust `api.sbx.baas.db.com`.
