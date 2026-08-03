@@ -21,20 +21,26 @@ function unauthorized() {
   return Response.json({ error: "unauthorized" }, { status: 401 });
 }
 
+/**
+ * Claude.ai custom connectors speak OAuth by default. Request-header / Bearer
+ * auth is beta and missing in many accounts — a 401 makes Claude demand a
+ * Client ID. Allow unauthenticated access so Cloud can connect (auth type
+ * "none"). If a Bearer token *is* sent, it must match CB_CONNECT_MCP_TOKEN.
+ * Bank secrets stay in server env (CBCON_*), not in this gate.
+ */
 function authorize(req: Request): Response | null {
   const token =
     process.env.CB_CONNECT_MCP_TOKEN || process.env.HAUSBANK_PLUS_MCP_TOKEN;
-  if (!token) {
-    if (process.env.VERCEL_ENV === "production") {
-      return unauthorized();
-    }
+  const auth = req.headers.get("authorization") ?? "";
+
+  if (!auth) {
     return null;
   }
 
-  const auth = req.headers.get("authorization") ?? "";
-  if (auth !== `Bearer ${token}`) {
+  if (token && auth !== `Bearer ${token}`) {
     return unauthorized();
   }
+
   return null;
 }
 
