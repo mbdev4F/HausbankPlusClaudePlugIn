@@ -2,7 +2,7 @@
 
 Claude-Plugin + MCP-Server für **Deutsche Bank CB-Connect (BaaS)**.
 
-Konnektoren (HTTP, mTLS, HTTP-Signatur, Parser, Builder) stammen aus dem produktiven TypeScript-Code von **dbHealthflow** (`lib/native-bank-connectivity`), entkoppelt vom Next.js-Team-Store.
+Konnektoren (HTTP, mTLS, HTTP-Signatur, Parser, Builder) stammen aus dem produktiven TypeScript-Code von **db** (`lib/native-bank-connectivity`), entkoppelt vom Next.js-Team-Store.
 
 ## Architektur
 
@@ -24,11 +24,11 @@ Claude ──Skills──► Plugin ──HTTP MCP──► mcp-server ──mTL
 | `get_realtime_balance` | Saldo |
 | `request_account_statement` / `load_account_statement` | CAMT Statements |
 | `verify_payee` | Verification of Pay |
-| `initiate_instant_payment` / `get_instant_payment_status` | SEPA Instant (ZIPA-Äquivalent) |
+| `initiate_instant_payment` / `get_instant_payment_status` | SEPA Instant  |
 | `get_swift_payment_status` | SWIFT GPI for Corporates |
 | `initiate_fx4cash` / `get_fx4cash_status` / `evaluate_fx4cash_value_date` | FX4Cash |
 
-Mehrstufige Freigabe bleibt Skill-/Prozess-Ebene (wie in HealthFlow ABAC); die Bank-APIs sind Instant + VoP + Status.
+Mehrstufige Freigabe bleibt Skill-/Prozess-Ebene (wie in Bank ABAC); die Bank-APIs sind Instant + VoP + Status.
 
 ## Schnellstart
 
