@@ -20,13 +20,13 @@ registerTools(mcp);
 const port = appConfig.port;
 
 const httpServer = createServer(async (req, res) => {
-  if (req.url === "/healthz") {
+  if (req.url === "/healthz" || req.url === "/api/healthz") {
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify({ ok: true, service: "db-cb-connect-mcp" }));
     return;
   }
 
-  if (req.url?.startsWith("/mcp")) {
+  if (req.url?.startsWith("/mcp") || req.url?.startsWith("/api/mcp")) {
     if (appConfig.mcpToken) {
       const auth = req.headers.authorization ?? "";
       const expected = `Bearer ${appConfig.mcpToken}`;

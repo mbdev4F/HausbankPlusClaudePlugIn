@@ -1,0 +1,16 @@
+{
+  "name": "db-cb-connect",
+  "owner": {
+    "name": "mbdev4F"
+  },
+  "metadata": {
+    "description": "Deutsche Bank CB-Connect — Claude Plugin + MCP Connector"
+  },
+  "plugins": [
+    {
+      "name": "db-cb-connect",
+      "source": "./",
+      "description": "Echtzeit-Salden, CAMT-Auszüge, SEPA Instant, VoP, SWIFT GPI und FX4Cash über Remote-MCP."
+    }
+  ]
+}

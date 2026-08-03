@@ -38,9 +38,26 @@ cp ../.env.example .env
 # CBCON_* Credentials + PKCS#12 Base64 eintragen
 npm install
 npm run dev
+# → http://localhost:8787/api/mcp  |  /api/healthz
 ```
 
 Plugin: `claude --plugin-dir .` im Repo-Root. Env: `CB_CONNECT_MCP_URL`, `CB_CONNECT_MCP_TOKEN`.
+
+```text
+/plugin marketplace add mbdev4F/HausbankPlusClaudePlugIn
+/plugin install db-cb-connect@db-cb-connect
+```
+
+### Vercel (Claude Cloud)
+
+| | |
+| --- | --- |
+| Production | https://hausbank-plus-mcp.vercel.app |
+| MCP | https://hausbank-plus-mcp.vercel.app/api/mcp |
+| Health | https://hausbank-plus-mcp.vercel.app/api/healthz |
+| Dashboard | https://vercel.com/mb4-projects/hausbank-plus-mcp |
+
+In Vercel Env setzen: `CB_CONNECT_MCP_TOKEN` (+ später `CBCON_*`). In Claude dieselben Werte für `CB_CONNECT_MCP_URL` / `CB_CONNECT_MCP_TOKEN`. Deployment Protection ist für diesen Connector aus (Auth = Bearer-Token).
 
 ## Zertifikate
 
