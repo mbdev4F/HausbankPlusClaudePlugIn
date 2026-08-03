@@ -1,0 +1,22 @@
+{
+  "name": "hausbank-plus",
+  "version": "0.1.0",
+  "description": "Hausbank Plus Connector für Claude: Echtzeit-Salden, globale Kontoauszüge, ZIPA-Zahlungen mit Verification of Pay, mehrstufiger Freigabe und Anbindung an Deutsche Bank / Postbank First inkl. SWIFT-Status und FX-Forwards.",
+  "author": {
+    "name": "mbdev4F"
+  },
+  "homepage": "https://github.com/mbdev4F/HausbankPlusClaudePlugIn",
+  "repository": "https://github.com/mbdev4F/HausbankPlusClaudePlugIn",
+  "license": "MIT",
+  "keywords": [
+    "banking",
+    "deutsche-bank",
+    "postbank",
+    "hausbank-plus",
+    "payments",
+    "zipa",
+    "swift",
+    "fx",
+    "mcp"
+  ]
+}

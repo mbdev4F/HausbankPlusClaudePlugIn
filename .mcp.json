@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "hausbank-plus": {
+      "type": "http",
+      "url": "${HAUSBANK_PLUS_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${HAUSBANK_PLUS_MCP_TOKEN}"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+# Secrets & certificates — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+certs/
+secrets/
+
+# Node / build
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.npm/
+.turbo/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Local API dumps (may contain PII)
+docs/api-specs/_private/
