@@ -19,14 +19,14 @@ Konnektoren stammen aus **dbHealthflow** / Cash365, entkoppelt vom Next.js-Team-
 | **SME Deutsche Bank** (`mcp-server/src/sme-deutsche-bank/`) | Biz-Banking auf api.db.com |
 | **finAPI** (`mcp-server/src/finapi/`) | Access + Web Form 2.0 |
 | **Better Payment** (`mcp-server/src/better-payment/`) | Wero + Pay by Bank Links |
-| **Hausbank365** (`mcp-server/src/banqr-bc/`) | HB365 CloudConnector (Accounts, Payments, …) |
+| **finAPI** (`mcp-server/src/finapi/`) | Access + Web Form 2.0 |
+| **Hausbank-Agent** (`mcp-server/src/banqr-bc/`) | CloudConnector tools (`hausbank_agent_*`) |
+
+Live Claude Cloud connector currently exposes **finAPI + Hausbank-Agent** only.
 
 ```
-Claude ──► MCP ──► api.sbx.baas.db.com          (CB-Connect)
-              ├──► simulator-api.db.com / api.db.com  (SME Deutsche Bank)
-              ├──► sandbox.finapi.io
-              ├──► testapi.betterpayment.de
-              └──► Hausbank365 CloudConnector APIs
+Claude ──► MCP ──► sandbox.finapi.io
+              └──► Hausbank-Agent CloudConnector APIs
 ```
 
 ## Tools

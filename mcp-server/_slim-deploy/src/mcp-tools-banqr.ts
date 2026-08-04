@@ -1,7 +1,7 @@
 /**
- * Hausbank365 (HB365) MCP tools — CloudConnector APIs.
- * User-facing product name is always Hausbank365 / HB365.
- * Do not mention the underlying ERP platform name in tool descriptions.
+ * Hausbank-Agent MCP tools (CloudConnector APIs).
+ * User-facing name: always "Hausbank-Agent".
+ * Tool names: hausbank_agent_* (e.g. hausbank_agent_list_payments).
  */
 
 import * as bc from "./operations-banqr-bc";
@@ -14,7 +14,7 @@ type ToolDef = {
 
 const companyId = {
   type: "string",
-  description: "Optional Hausbank365 company GUID (defaults to HB365_COMPANY_ID)",
+  description: "Optional Hausbank-Agent company GUID (defaults to HAUSBANK_AGENT_COMPANY_ID)",
 };
 
 const body = {
@@ -29,20 +29,20 @@ const query = {
 
 export const banqrBcTools: ToolDef[] = [
   {
-    name: "hb365_probe_auth",
+    name: "hausbank_agent_probe_auth",
     description:
-      "Diagnostics: Hausbank365 env + client_credentials token (no secrets).",
+      "Diagnostics: Hausbank-Agent env + client_credentials token (no secrets).",
     inputSchema: { type: "object", properties: {} },
   },
   {
-    name: "hb365_list_companies",
-    description: "List Hausbank365 companies. Use returned id as companyId.",
+    name: "hausbank_agent_list_companies",
+    description: "List Hausbank-Agent companies. Use returned id as companyId.",
     inputSchema: { type: "object", properties: {} },
   },
   {
-    name: "hb365_request",
+    name: "hausbank_agent_request",
     description:
-      "Low-level Hausbank365 API call. Path may include {companyId}. Prefer named hb365_* tools when possible.",
+      "Low-level Hausbank-Agent API call. Path may include {companyId}. Prefer named hausbank_agent_* tools when possible.",
     inputSchema: {
       type: "object",
       properties: {
@@ -61,13 +61,13 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_get_setup",
-    description: "Get Hausbank365 setup records.",
+    name: "hausbank_agent_get_setup",
+    description: "Get Hausbank-Agent setup records.",
     inputSchema: { type: "object", properties: { companyId } },
   },
   {
-    name: "hb365_update_setup",
-    description: "PATCH Hausbank365 setup by setupId (If-Match default *).",
+    name: "hausbank_agent_update_setup",
+    description: "PATCH Hausbank-Agent setup by setupId (If-Match default *).",
     inputSchema: {
       type: "object",
       properties: {
@@ -80,7 +80,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_set_certificate_password",
+    name: "hausbank_agent_set_certificate_password",
     description: "Bound action setCertificatePassword on setup.",
     inputSchema: {
       type: "object",
@@ -89,7 +89,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_set_client_secret",
+    name: "hausbank_agent_set_client_secret",
     description: "Bound action setClientSecret on setup.",
     inputSchema: {
       type: "object",
@@ -98,7 +98,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_set_certificate",
+    name: "hausbank_agent_set_certificate",
     description: "Bound action setCertificate on setup.",
     inputSchema: {
       type: "object",
@@ -107,7 +107,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_delete_all_secrets",
+    name: "hausbank_agent_delete_all_secrets",
     description: "Bound action deleteAllSecrets on setup.",
     inputSchema: {
       type: "object",
@@ -116,17 +116,17 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_get_api_call_log",
-    description: "List Hausbank365 API call log.",
+    name: "hausbank_agent_get_api_call_log",
+    description: "List Hausbank-Agent API call log.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_finapi_create_connector",
-    description: "Create openBankingConnectors (finAPI) setup row in Hausbank365.",
+    name: "hausbank_agent_finapi_create_connector",
+    description: "Create openBankingConnectors (finAPI) setup row in Hausbank-Agent.",
     inputSchema: { type: "object", properties: { body, companyId } },
   },
   {
-    name: "hb365_finapi_get_auth_page_url",
+    name: "hausbank_agent_finapi_get_auth_page_url",
     description: "Get Open Banking auth page URL for a connector.",
     inputSchema: {
       type: "object",
@@ -139,7 +139,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_finapi_load_accounts",
+    name: "hausbank_agent_finapi_load_accounts",
     description: "Load Open Banking accounts into BC for a connector.",
     inputSchema: {
       type: "object",
@@ -152,12 +152,12 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_vendors",
-    description: "List vendor counterparties (Hausbank365 recipient API).",
+    name: "hausbank_agent_list_vendors",
+    description: "List vendor counterparties (Hausbank-Agent recipient API).",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_get_vendor",
+    name: "hausbank_agent_get_vendor",
     description: "Get vendor counterparty by id.",
     inputSchema: {
       type: "object",
@@ -166,7 +166,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_vendor",
+    name: "hausbank_agent_create_vendor",
     description: "Create vendor counterparty.",
     inputSchema: {
       type: "object",
@@ -175,7 +175,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_update_vendor",
+    name: "hausbank_agent_update_vendor",
     description: "Update vendor (bank details etc.).",
     inputSchema: {
       type: "object",
@@ -189,7 +189,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_delete_vendor",
+    name: "hausbank_agent_delete_vendor",
     description: "Delete vendor counterparty.",
     inputSchema: {
       type: "object",
@@ -202,12 +202,12 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_customers",
+    name: "hausbank_agent_list_customers",
     description: "List customer counterparties.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_get_customer",
+    name: "hausbank_agent_get_customer",
     description: "Get customer counterparty by id.",
     inputSchema: {
       type: "object",
@@ -216,7 +216,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_customer",
+    name: "hausbank_agent_create_customer",
     description: "Create customer counterparty.",
     inputSchema: {
       type: "object",
@@ -225,7 +225,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_update_customer",
+    name: "hausbank_agent_update_customer",
     description: "Update customer counterparty.",
     inputSchema: {
       type: "object",
@@ -239,7 +239,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_delete_customer",
+    name: "hausbank_agent_delete_customer",
     description: "Delete customer counterparty.",
     inputSchema: {
       type: "object",
@@ -252,12 +252,12 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_accounts",
-    description: "List Hausbank365 bank accounts (incl. balances).",
+    name: "hausbank_agent_list_accounts",
+    description: "List Hausbank-Agent bank accounts (incl. balances).",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_get_account",
+    name: "hausbank_agent_get_account",
     description: "Get bank account by system id.",
     inputSchema: {
       type: "object",
@@ -266,8 +266,8 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_account",
-    description: "Create bank account in Hausbank365.",
+    name: "hausbank_agent_create_account",
+    description: "Create bank account in Hausbank-Agent.",
     inputSchema: {
       type: "object",
       properties: { body, companyId },
@@ -275,7 +275,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_update_account",
+    name: "hausbank_agent_update_account",
     description: "PATCH bank account.",
     inputSchema: {
       type: "object",
@@ -289,7 +289,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_delete_account",
+    name: "hausbank_agent_delete_account",
     description: "Delete bank account.",
     inputSchema: {
       type: "object",
@@ -302,9 +302,9 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_update_from_bank",
+    name: "hausbank_agent_update_from_bank",
     description:
-      "Bound action updateFromBank — refresh balance/transactions from bank into Hausbank365.",
+      "Bound action updateFromBank — refresh balance/transactions from bank into Hausbank-Agent.",
     inputSchema: {
       type: "object",
       properties: { accountId: { type: "string" }, body, companyId },
@@ -312,7 +312,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_bank_confirmation",
+    name: "hausbank_agent_create_bank_confirmation",
     description: "Create bank account confirmation.",
     inputSchema: {
       type: "object",
@@ -321,7 +321,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_get_bank_confirmation_pdf",
+    name: "hausbank_agent_get_bank_confirmation_pdf",
     description: "Get stored bank confirmation PDF via bound action.",
     inputSchema: {
       type: "object",
@@ -334,7 +334,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_physical_parent_account",
+    name: "hausbank_agent_create_physical_parent_account",
     description: "Create physical parent account (virtual bank accounts API).",
     inputSchema: {
       type: "object",
@@ -343,7 +343,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_virtual_account",
+    name: "hausbank_agent_create_virtual_account",
     description: "Create virtual account under a parent account.",
     inputSchema: {
       type: "object",
@@ -356,7 +356,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_odata_batch",
+    name: "hausbank_agent_odata_batch",
     description: "POST OData $batch (payment or virtualbankaccounts).",
     inputSchema: {
       type: "object",
@@ -369,9 +369,9 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_transactions",
+    name: "hausbank_agent_list_transactions",
     description:
-      "List Hausbank365 transactions. Optional accountNo builds $filter=accountNumber eq '...'.",
+      "List Hausbank-Agent transactions. Optional accountNo builds $filter=accountNumber eq '...'.",
     inputSchema: {
       type: "object",
       properties: {
@@ -382,12 +382,12 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_statements",
+    name: "hausbank_agent_list_statements",
     description: "List statement requests.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_create_statement",
+    name: "hausbank_agent_create_statement",
     description: "Create statement request.",
     inputSchema: {
       type: "object",
@@ -396,7 +396,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_get_statement",
+    name: "hausbank_agent_get_statement",
     description: "Get statement request / status.",
     inputSchema: {
       type: "object",
@@ -409,7 +409,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_send_statement_to_bank",
+    name: "hausbank_agent_send_statement_to_bank",
     description: "Send statement request to bank.",
     inputSchema: {
       type: "object",
@@ -418,7 +418,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_load_camt_xml",
+    name: "hausbank_agent_load_camt_xml",
     description: "Load CAMT XML for a statement request.",
     inputSchema: {
       type: "object",
@@ -427,12 +427,12 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_payments",
-    description: "List Hausbank365 payments.",
+    name: "hausbank_agent_list_payments",
+    description: "List Hausbank-Agent payments.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_get_payment",
+    name: "hausbank_agent_get_payment",
     description: "Get payment by id.",
     inputSchema: {
       type: "object",
@@ -441,7 +441,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_create_payment",
+    name: "hausbank_agent_create_payment",
     description: "Create payment draft.",
     inputSchema: {
       type: "object",
@@ -450,7 +450,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_update_payment",
+    name: "hausbank_agent_update_payment",
     description: "Update payment draft.",
     inputSchema: {
       type: "object",
@@ -464,7 +464,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_delete_payment",
+    name: "hausbank_agent_delete_payment",
     description: "Delete payment draft.",
     inputSchema: {
       type: "object",
@@ -477,7 +477,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_approve_payment",
+    name: "hausbank_agent_approve_payment",
     description: "Approve payment (bound action).",
     inputSchema: {
       type: "object",
@@ -486,7 +486,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_reopen_payment",
+    name: "hausbank_agent_reopen_payment",
     description: "Reopen payment (bound action).",
     inputSchema: {
       type: "object",
@@ -495,7 +495,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_send_payment_to_bank",
+    name: "hausbank_agent_send_payment_to_bank",
     description: "Send payment to bank (bound action).",
     inputSchema: {
       type: "object",
@@ -504,7 +504,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_update_payment_status_from_bank",
+    name: "hausbank_agent_update_payment_status_from_bank",
     description: "Refresh payment status from bank.",
     inputSchema: {
       type: "object",
@@ -513,17 +513,17 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_sepa_bics",
+    name: "hausbank_agent_list_sepa_bics",
     description: "List SEPA BIC directory entries.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_list_purpose_codes",
+    name: "hausbank_agent_list_purpose_codes",
     description: "List payment purpose codes.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_create_g4c_search",
+    name: "hausbank_agent_create_g4c_search",
     description: "Create Swift G4C payment tracker search request.",
     inputSchema: {
       type: "object",
@@ -532,12 +532,12 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_g4c_searches",
+    name: "hausbank_agent_list_g4c_searches",
     description: "List Swift G4C search requests.",
     inputSchema: { type: "object", properties: { query, companyId } },
   },
   {
-    name: "hb365_run_g4c_swift_search",
+    name: "hausbank_agent_run_g4c_swift_search",
     description: "Initiate Swift network search for a G4C search id.",
     inputSchema: {
       type: "object",
@@ -546,7 +546,7 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hb365_list_g4c_payments",
+    name: "hausbank_agent_list_g4c_payments",
     description:
       "List G4C tracker payments (optional uetr filter). Expands events/remittances by default.",
     inputSchema: {
@@ -574,13 +574,16 @@ export async function callBanqrBcTool(
   name: string,
   args: Record<string, unknown>,
 ): Promise<unknown> {
-  const tool = name.startsWith("bc_") ? `hb365_${name.slice(3)}` : name;
+  let tool = name;
+  if (name.startsWith("hausbank_agent_")) tool = name;
+  else if (name.startsWith("hb365_")) tool = "hausbank_agent_" + name.slice(6);
+  else if (name.startsWith("bc_")) tool = "hausbank_agent_" + name.slice(3);
   switch (tool) {
-    case "hb365_probe_auth":
+    case "hausbank_agent_probe_auth":
       return bc.bcProbeAuth();
-    case "hb365_list_companies":
+    case "hausbank_agent_list_companies":
       return bc.bcListCompanies();
-    case "hb365_request":
+    case "hausbank_agent_request":
       return bc.bcRequest({
         method: str(args.method),
         path: String(args.path ?? ""),
@@ -589,291 +592,291 @@ export async function callBanqrBcTool(
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_get_setup":
+    case "hausbank_agent_get_setup":
       return bc.bcGetSetup({ companyId: str(args.companyId) });
-    case "hb365_update_setup":
+    case "hausbank_agent_update_setup":
       return bc.bcUpdateSetup({
         setupId: String(args.setupId ?? ""),
         body: obj(args.body) ?? {},
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_set_certificate_password":
+    case "hausbank_agent_set_certificate_password":
       return bc.bcSetCertificatePassword({
         setupId: String(args.setupId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_set_client_secret":
+    case "hausbank_agent_set_client_secret":
       return bc.bcSetClientSecret({
         setupId: String(args.setupId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_set_certificate":
+    case "hausbank_agent_set_certificate":
       return bc.bcSetCertificate({
         setupId: String(args.setupId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_delete_all_secrets":
+    case "hausbank_agent_delete_all_secrets":
       return bc.bcDeleteAllSecrets({
         setupId: String(args.setupId ?? ""),
         companyId: str(args.companyId),
       });
-    case "hb365_get_api_call_log":
+    case "hausbank_agent_get_api_call_log":
       return bc.bcGetApiCallLog({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_finapi_create_connector":
+    case "hausbank_agent_finapi_create_connector":
       return bc.bcFinapiCreateConnector({
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_finapi_get_auth_page_url":
+    case "hausbank_agent_finapi_get_auth_page_url":
       return bc.bcFinapiGetAuthPageUrl({
         openBankingConnectorId: String(args.openBankingConnectorId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_finapi_load_accounts":
+    case "hausbank_agent_finapi_load_accounts":
       return bc.bcFinapiLoadAccounts({
         openBankingConnectorId: String(args.openBankingConnectorId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_list_vendors":
+    case "hausbank_agent_list_vendors":
       return bc.bcListVendors({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_get_vendor":
+    case "hausbank_agent_get_vendor":
       return bc.bcGetVendor({
         vendorId: String(args.vendorId ?? ""),
         companyId: str(args.companyId),
       });
-    case "hb365_create_vendor":
+    case "hausbank_agent_create_vendor":
       return bc.bcCreateVendor({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_update_vendor":
+    case "hausbank_agent_update_vendor":
       return bc.bcUpdateVendor({
         vendorId: String(args.vendorId ?? ""),
         body: obj(args.body) ?? {},
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_delete_vendor":
+    case "hausbank_agent_delete_vendor":
       return bc.bcDeleteVendor({
         vendorId: String(args.vendorId ?? ""),
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_list_customers":
+    case "hausbank_agent_list_customers":
       return bc.bcListCustomers({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_get_customer":
+    case "hausbank_agent_get_customer":
       return bc.bcGetCustomer({
         customerId: String(args.customerId ?? ""),
         companyId: str(args.companyId),
       });
-    case "hb365_create_customer":
+    case "hausbank_agent_create_customer":
       return bc.bcCreateCustomer({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_update_customer":
+    case "hausbank_agent_update_customer":
       return bc.bcUpdateCustomer({
         customerId: String(args.customerId ?? ""),
         body: obj(args.body) ?? {},
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_delete_customer":
+    case "hausbank_agent_delete_customer":
       return bc.bcDeleteCustomer({
         customerId: String(args.customerId ?? ""),
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_list_accounts":
+    case "hausbank_agent_list_accounts":
       return bc.bcListAccounts({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_get_account":
+    case "hausbank_agent_get_account":
       return bc.bcGetAccount({
         accountId: String(args.accountId ?? ""),
         companyId: str(args.companyId),
       });
-    case "hb365_create_account":
+    case "hausbank_agent_create_account":
       return bc.bcCreateAccount({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_update_account":
+    case "hausbank_agent_update_account":
       return bc.bcUpdateAccount({
         accountId: String(args.accountId ?? ""),
         body: obj(args.body) ?? {},
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_delete_account":
+    case "hausbank_agent_delete_account":
       return bc.bcDeleteAccount({
         accountId: String(args.accountId ?? ""),
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_update_from_bank":
+    case "hausbank_agent_update_from_bank":
       return bc.bcUpdateFromBank({
         accountId: String(args.accountId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_create_bank_confirmation":
+    case "hausbank_agent_create_bank_confirmation":
       return bc.bcCreateBankConfirmation({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_get_bank_confirmation_pdf":
+    case "hausbank_agent_get_bank_confirmation_pdf":
       return bc.bcGetBankConfirmationPdf({
         confirmationId: String(args.confirmationId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_create_physical_parent_account":
+    case "hausbank_agent_create_physical_parent_account":
       return bc.bcCreatePhysicalParentAccount({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_create_virtual_account":
+    case "hausbank_agent_create_virtual_account":
       return bc.bcCreateVirtualAccount({
         parentAccountId: String(args.parentAccountId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_odata_batch":
+    case "hausbank_agent_odata_batch":
       return bc.bcODataBatch({
         api: args.api === "virtualbankaccounts" ? "virtualbankaccounts" : "payment",
         body: args.body,
         companyId: str(args.companyId),
       });
-    case "hb365_list_transactions":
+    case "hausbank_agent_list_transactions":
       return bc.bcListTransactions({
         accountNo: str(args.accountNo),
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_list_statements":
+    case "hausbank_agent_list_statements":
       return bc.bcListStatements({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_create_statement":
+    case "hausbank_agent_create_statement":
       return bc.bcCreateStatement({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_get_statement":
+    case "hausbank_agent_get_statement":
       return bc.bcGetStatement({
         statementId: String(args.statementId ?? ""),
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_send_statement_to_bank":
+    case "hausbank_agent_send_statement_to_bank":
       return bc.bcSendStatementToBank({
         statementId: String(args.statementId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_load_camt_xml":
+    case "hausbank_agent_load_camt_xml":
       return bc.bcLoadCamtXml({
         statementId: String(args.statementId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_list_payments":
+    case "hausbank_agent_list_payments":
       return bc.bcListPayments({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_get_payment":
+    case "hausbank_agent_get_payment":
       return bc.bcGetPayment({
         paymentId: String(args.paymentId ?? ""),
         companyId: str(args.companyId),
       });
-    case "hb365_create_payment":
+    case "hausbank_agent_create_payment":
       return bc.bcCreatePayment({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_update_payment":
+    case "hausbank_agent_update_payment":
       return bc.bcUpdatePayment({
         paymentId: String(args.paymentId ?? ""),
         body: obj(args.body) ?? {},
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_delete_payment":
+    case "hausbank_agent_delete_payment":
       return bc.bcDeletePayment({
         paymentId: String(args.paymentId ?? ""),
         ifMatch: str(args.ifMatch),
         companyId: str(args.companyId),
       });
-    case "hb365_approve_payment":
+    case "hausbank_agent_approve_payment":
       return bc.bcApprovePayment({
         paymentId: String(args.paymentId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_reopen_payment":
+    case "hausbank_agent_reopen_payment":
       return bc.bcReopenPayment({
         paymentId: String(args.paymentId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_send_payment_to_bank":
+    case "hausbank_agent_send_payment_to_bank":
       return bc.bcSendPaymentToBank({
         paymentId: String(args.paymentId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_update_payment_status_from_bank":
+    case "hausbank_agent_update_payment_status_from_bank":
       return bc.bcUpdatePaymentStatusFromBank({
         paymentId: String(args.paymentId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_list_sepa_bics":
+    case "hausbank_agent_list_sepa_bics":
       return bc.bcListSepaBics({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_list_purpose_codes":
+    case "hausbank_agent_list_purpose_codes":
       return bc.bcListPurposeCodes({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_create_g4c_search":
+    case "hausbank_agent_create_g4c_search":
       return bc.bcCreateG4cSearch({
         body: obj(args.body) ?? {},
         companyId: str(args.companyId),
       });
-    case "hb365_list_g4c_searches":
+    case "hausbank_agent_list_g4c_searches":
       return bc.bcListG4cSearches({
         query: str(args.query),
         companyId: str(args.companyId),
       });
-    case "hb365_run_g4c_swift_search":
+    case "hausbank_agent_run_g4c_swift_search":
       return bc.bcRunG4cSwiftSearch({
         g4cId: String(args.g4cId ?? ""),
         body: obj(args.body),
         companyId: str(args.companyId),
       });
-    case "hb365_list_g4c_payments":
+    case "hausbank_agent_list_g4c_payments":
       return bc.bcListG4cPayments({
         uetr: str(args.uetr),
         query: str(args.query),
@@ -885,5 +888,5 @@ export async function callBanqrBcTool(
 }
 
 export function isBanqrBcTool(name: string): boolean {
-  return name.startsWith("hb365_") || name.startsWith("bc_");
+  return name.startsWith("hausbank_agent_") || name.startsWith("hb365_") || name.startsWith("bc_");
 }

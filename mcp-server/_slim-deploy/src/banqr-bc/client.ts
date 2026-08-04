@@ -44,7 +44,7 @@ async function fetchAccessToken(e: BanqrBcEnv): Promise<{
   const text = await res.text();
   if (!res.ok) {
     throw new BanqrBcHttpError(
-      `HB365 token failed (HTTP ${res.status}): ${text.slice(0, 400)}`,
+      `Hausbank-Agent token failed (HTTP ${res.status}): ${text.slice(0, 400)}`,
       res.status,
       text,
     );
@@ -54,7 +54,7 @@ async function fetchAccessToken(e: BanqrBcEnv): Promise<{
     expires_in?: number;
   };
   if (!json.access_token) {
-    throw new Error("HB365 token response missing access_token");
+    throw new Error("Hausbank-Agent token response missing access_token");
   }
   return {
     accessToken: json.access_token,
@@ -98,7 +98,7 @@ function resolveCompanyId(e: BanqrBcEnv, override?: string): string {
   const id = (override ?? e.companyId).trim();
   if (!id) {
     throw new Error(
-      "companyId fehlt — HB365_COMPANY_ID setzen oder companyId übergeben (nach hb365_list_companies).",
+      "companyId fehlt — HAUSBANK_AGENT_COMPANY_ID setzen oder companyId übergeben (nach hausbank_agent_list_companies).",
     );
   }
   return id;
@@ -172,7 +172,7 @@ export async function banqrBcRequest<T = unknown>(
         /* plain */
       }
       throw new BanqrBcHttpError(
-        `HB365 ${method} ${path} failed (HTTP ${res.status}): ${message}`,
+        `Hausbank-Agent ${method} ${path} failed (HTTP ${res.status}): ${message}`,
         res.status,
         text,
       );

@@ -1,11 +1,13 @@
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-import {
-  getRealtimeBalance,
-  probeAuthSetup,
-  probeTokenAndHealth,
-} from "../../../lib/balance";
+/**
+ * Live MCP for Claude Cloud:
+ * - finAPI tools
+ * - Hausbank-Agent tools (hausbank_agent_*)
+ * CB-Connect / SME are intentionally not exposed here.
+ */
+
 import * as finapi from "../../../src/operations-finapi";
 import {
   banqrBcTools,
@@ -36,44 +38,8 @@ function toolResult(data: unknown, isError = false) {
 const tools = [
   {
     name: "ping",
-    description: "Connectivity check for Claude Cloud custom connector.",
+    description: "Connectivity check for the Hausbank / finAPI Claude connector.",
     inputSchema: { type: "object", properties: { message: { type: "string" } } },
-  },
-  {
-    name: "probe_auth_setup",
-    description:
-      "Diagnostics: CB-Connect env credentials and endpoint resolution (no secrets returned).",
-    inputSchema: { type: "object", properties: {} },
-  },
-  {
-    name: "probe_token_and_health",
-    description:
-      "Fetch OAuth token and call account-balance health endpoint (UP expected).",
-    inputSchema: { type: "object", properties: {} },
-  },
-  {
-    name: "get_realtime_balance",
-    description:
-      "Fetch realtime booked/available balance via Deutsche Bank CB-Connect.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        branchIdentifier: {
-          type: "string",
-          description: "Branch / BIC-like identifier",
-        },
-        accountCurrency: {
-          type: "string",
-          description: "Account currency, usually EUR",
-          default: "EUR",
-        },
-        accountIdentifier: {
-          type: "string",
-          description: "Account number / IBAN as required by API",
-        },
-      },
-      required: ["branchIdentifier", "accountIdentifier"],
-    },
   },
   {
     name: "finapi_probe_auth",
@@ -134,7 +100,7 @@ const tools = [
   {
     name: "finapi_list_transactions",
     description:
-      "List AIS transactions for a finAPI account (JSON bank view, not CAMT). See finAPI Access Transactions.",
+      "List AIS transactions for a finAPI account (JSON bank view, not CAMT).",
     inputSchema: {
       type: "object",
       properties: {
@@ -234,7 +200,10 @@ async function handleMessage(message: {
     return ok(id, {
       protocolVersion: "2024-11-05",
       capabilities: { tools: { listChanged: false } },
-      serverInfo: { name: "db-cb-connect", version: "0.2.1" },
+      serverInfo: {
+        name: "hausbank-agent-finapi",
+        version: "0.3.0",
+      },
     });
   }
 
@@ -256,36 +225,7 @@ async function handleMessage(message: {
           typeof args.message === "string" ? args.message : "pong";
         return ok(id, toolResult({ ok: true, echo: messageText }));
       }
-      if (name === "probe_auth_setup") {
-        return ok(id, toolResult(await probeAuthSetup()));
-      }
-      if (name === "probe_token_and_health") {
-        return ok(id, toolResult(await probeTokenAndHealth()));
-      }
-      if (name === "get_realtime_balance") {
-        const branchIdentifier = String(args.branchIdentifier ?? "");
-        const accountIdentifier = String(args.accountIdentifier ?? "");
-        const accountCurrency = String(args.accountCurrency ?? "EUR");
-        if (!branchIdentifier || !accountIdentifier) {
-          return ok(
-            id,
-            toolResult(
-              { error: "branchIdentifier and accountIdentifier are required" },
-              true,
-            ),
-          );
-        }
-        return ok(
-          id,
-          toolResult(
-            await getRealtimeBalance({
-              branchIdentifier,
-              accountCurrency,
-              accountIdentifier,
-            }),
-          ),
-        );
-      }
+
       if (name === "finapi_probe_auth") {
         return ok(id, toolResult(await finapi.finapiProbeAuth()));
       }
