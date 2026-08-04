@@ -1,0 +1,1 @@
+{"file":"app/page.tsx","data":"export default function HomePage() {\r\n  return (\r\n    <main>\r\n      <h1>DB CB-Connect MCP</h1>\r\n      <p>Endpoint: <code>/api/mcp</code></p>\r\n    </main>\r\n  );\r\n}\r\n"}

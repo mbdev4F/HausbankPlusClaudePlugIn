@@ -9,7 +9,7 @@ Hier landen die Spezifikationen, die du Stück für Stück lieferst.
 | `docs/api-specs/README.md` | Diese Übersicht |
 | `docs/api-specs/balances.openapi.yaml` | (folgt) Realtime Balance / Accounts |
 | `docs/api-specs/statements.openapi.yaml` | (folgt) Global Account Statements |
-| `docs/api-specs/payments-zipa.openapi.yaml` | (folgt) ZIPA Payments |
+| `docs/api-specs/payments-SEPA.openapi.yaml` | (folgt) SEPA Payments |
 | `docs/api-specs/vop.openapi.yaml` | (folgt) Verification of Pay |
 | `docs/api-specs/approvals.openapi.yaml` | (folgt) Mehrstufige Freigabe |
 | `docs/api-specs/swift-status.openapi.yaml` | (folgt) SWIFT Payment Status |

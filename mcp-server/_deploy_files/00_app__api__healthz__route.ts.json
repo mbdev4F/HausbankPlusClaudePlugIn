@@ -1,0 +1,1 @@
+{"file":"app/api/healthz/route.ts","data":"export const runtime = \"nodejs\";\r\n\r\nexport function GET() {\r\n  return Response.json({ ok: true, service: \"db-cb-connect-mcp\" });\r\n}\r\n"}

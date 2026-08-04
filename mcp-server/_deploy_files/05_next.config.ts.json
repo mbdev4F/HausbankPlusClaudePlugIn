@@ -1,0 +1,1 @@
+{"file":"next.config.ts","data":"import type { NextConfig } from \"next\";\r\n\r\nconst nextConfig: NextConfig = {\r\n  serverExternalPackages: [\"node-forge\"],\r\n};\r\n\r\nexport default nextConfig;\r\n"}

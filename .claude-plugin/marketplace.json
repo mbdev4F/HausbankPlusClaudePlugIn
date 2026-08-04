@@ -4,13 +4,13 @@
     "name": "mbdev4F"
   },
   "metadata": {
-    "description": "Deutsche Bank CB-Connect — Claude Plugin + MCP Connector"
+    "description": "CB-Connect + SME Deutsche Bank + finAPI + Better Payment — Claude MCP"
   },
   "plugins": [
     {
       "name": "db-cb-connect",
       "source": "./",
-      "description": "Echtzeit-Salden, CAMT-Auszüge, SEPA Instant, VoP, SWIFT GPI und FX4Cash über Remote-MCP."
+      "description": "Enterprise CB-Connect, SME Deutsche Bank Connector, finAPI und Better Payment (Wero / Pay by Bank)."
     }
   ]
 }

@@ -1,0 +1,1 @@
+{"file":"vercel.json","data":"{\r\n  \"$schema\": \"https://openapi.vercel.sh/vercel.json\",\r\n  \"framework\": \"nextjs\",\r\n  \"regions\": [\"fra1\"],\r\n  \"rewrites\": [\r\n    { \"source\": \"/mcp\", \"destination\": \"/api/mcp\" },\r\n    { \"source\": \"/healthz\", \"destination\": \"/api/healthz\" }\r\n  ]\r\n}\r\n"}

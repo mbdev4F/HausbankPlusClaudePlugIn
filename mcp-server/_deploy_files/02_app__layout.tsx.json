@@ -1,0 +1,1 @@
+{"file":"app/layout.tsx","data":"import type { ReactNode } from \"react\";\r\n\r\nexport default function RootLayout({ children }: { children: ReactNode }) {\r\n  return (\r\n    <html lang=\"de\">\r\n      <body style={{ fontFamily: \"system-ui\", margin: \"2rem\" }}>{children}</body>\r\n    </html>\r\n  );\r\n}\r\n"}

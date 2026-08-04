@@ -1,8 +1,8 @@
 {
   "name": "@db-cb-connect/mcp-server",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "private": true,
-  "description": "Deutsche Bank CB-Connect MCP server — mTLS + HTTP Signature gateway (ported from dbHealthflow)",
+  "description": "CB-Connect + SME Deutsche Bank + finAPI + Better Payment MCP server",
   "engines": {
     "node": ">=20"
   },
