@@ -10,8 +10,8 @@ const mcpHandler = createMcpHandler(
   },
   {
     serverInfo: {
-      name: "db-cb-connect",
-      version: "0.2.0",
+      name: "HausbankAgent",
+      version: "0.3.0",
     },
   },
   { basePath: "/api" },

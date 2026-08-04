@@ -38,7 +38,7 @@ function toolResult(data: unknown, isError = false) {
 const tools = [
   {
     name: "ping",
-    description: "Connectivity check for the Hausbank / finAPI Claude connector.",
+    description: "Connectivity check for the HausbankAgent Claude connector.",
     inputSchema: { type: "object", properties: { message: { type: "string" } } },
   },
   {
@@ -201,9 +201,12 @@ async function handleMessage(message: {
       protocolVersion: "2024-11-05",
       capabilities: { tools: { listChanged: false } },
       serverInfo: {
-        name: "hausbank-agent-finapi",
+        name: "HausbankAgent",
+        title: "HausbankAgent",
         version: "0.3.0",
       },
+      instructions:
+        "This connector is HausbankAgent. Prefer tools named hausbank_agent_* and finapi_*. Never refer to it as DB, CB-Connect, or Business Central.",
     });
   }
 

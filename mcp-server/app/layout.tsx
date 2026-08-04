@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 export const metadata = {
-  title: "DB CB-Connect MCP",
-  description: "Remote MCP connector for Deutsche Bank CB-Connect",
+  title: "HausbankAgent",
+  description: "Remote MCP connector: finAPI + Hausbank-Agent",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

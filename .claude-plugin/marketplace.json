@@ -1,16 +1,16 @@
 {
-  "name": "db-cb-connect",
+  "name": "HausbankAgent",
   "owner": {
     "name": "mbdev4F"
   },
   "metadata": {
-    "description": "CB-Connect + SME Deutsche Bank + finAPI + Better Payment — Claude MCP"
+    "description": "HausbankAgent — finAPI + Hausbank-Agent MCP für Claude"
   },
   "plugins": [
     {
-      "name": "db-cb-connect",
+      "name": "HausbankAgent",
       "source": "./",
-      "description": "Enterprise CB-Connect, SME Deutsche Bank Connector, finAPI und Better Payment (Wero / Pay by Bank)."
+      "description": "finAPI und Hausbank-Agent (Konten, Zahlungen, Open Banking)."
     }
   ]
 }

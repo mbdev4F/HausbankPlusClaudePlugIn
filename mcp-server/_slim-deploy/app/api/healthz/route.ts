@@ -1,5 +1,5 @@
 export const runtime = "nodejs";
 
 export function GET() {
-  return Response.json({ ok: true, service: "db-cb-connect-mcp" });
+  return Response.json({ ok: true, service: "HausbankAgent" });
 }

@@ -1,7 +1,7 @@
 {
-  "name": "db-cb-connect",
+  "name": "HausbankAgent",
   "version": "0.5.0",
-  "description": "Deutsche Bank CB-Connect + SME Deutsche Bank Connector + finAPI + Better Payment für Claude (Salden, Instant, Payment-Links Wero/Pay by Bank).",
+  "description": "HausbankAgent — finAPI und Hausbank-Agent MCP für Claude (Konten, Zahlungen, Open Banking).",
   "author": {
     "name": "mbdev4F"
   },

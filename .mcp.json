@@ -1,10 +1,10 @@
 {
   "mcpServers": {
-    "db-cb-connect": {
+    "HausbankAgent": {
       "type": "http",
-      "url": "${CB_CONNECT_MCP_URL}",
+      "url": "${HAUSBANK_AGENT_MCP_URL}",
       "headers": {
-        "Authorization": "Bearer ${CB_CONNECT_MCP_TOKEN}"
+        "Authorization": "Bearer ${HAUSBANK_AGENT_MCP_TOKEN}"
       }
     }
   }
