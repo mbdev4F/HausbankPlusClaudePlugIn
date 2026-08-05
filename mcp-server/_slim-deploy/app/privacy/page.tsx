@@ -61,7 +61,7 @@ export default function PrivacyPage() {
           </h2>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>Microsoft Entra ID (login)</li>
-            <li>Your Banqr CloudConnector / ERP APIs</li>
+            <li>Your Banqr CloudConnector / Azure cloud banking APIs</li>
             <li>Vercel (hosting)</li>
             <li>Anthropic / Claude (MCP client)</li>
           </ul>

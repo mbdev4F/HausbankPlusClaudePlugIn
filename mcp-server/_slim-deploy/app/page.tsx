@@ -8,7 +8,7 @@ export default function HomePage() {
         HausbankAgent
       </h1>
       <p className="mt-4 text-lg text-ink-muted">
-        Remote MCP for Claude Cloud — Entra OAuth, your ERP banking APIs.
+        Remote MCP for Claude Cloud — Entra OAuth, your Azure cloud banking stack.
       </p>
       <ul className="mt-8 space-y-3 text-ink-muted">
         <li>

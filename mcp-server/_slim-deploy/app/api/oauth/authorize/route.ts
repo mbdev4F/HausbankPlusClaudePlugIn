@@ -67,7 +67,7 @@ export async function GET(req: Request) {
       <input type="hidden" name="state" value="${state.replace(/"/g, "&quot;")}" />
       <input type="hidden" name="code_challenge" value="${codeChallenge.replace(/"/g, "&quot;")}" />
       <label>Environment-Name
-        <span class="hint">z. B. Production, Sandbox — wie in Business Central</span>
+        <span class="hint">z. B. Production, Sandbox — wie in Microsoft 365</span>
         <input name="environmentName" required autocomplete="off" placeholder="Production" />
       </label>
       <label>Company-ID (GUID)

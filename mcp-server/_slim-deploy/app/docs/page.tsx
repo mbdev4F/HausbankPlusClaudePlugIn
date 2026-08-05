@@ -9,7 +9,7 @@ const copy = {
     badge: "Dokumentation",
     title: "HausbankAgent",
     lead:
-      "Verbinde Claude mit deinem eigenen ERP-Banking über Microsoft Entra. Ein Connector, viele Mandanten — ohne Client-Secret beim Endnutzer.",
+      "Verbinde Claude mit deinem eigenen Banking-Stack in der Azure Cloud über Microsoft Entra. Ein Connector, viele Mandanten — ohne Client-Secret beim Endnutzer.",
     connectTitle: "Verbinden in Claude",
     connectSteps: [
       "Settings → Connectors → Custom Connector hinzufügen (oder Directory).",
@@ -23,22 +23,22 @@ const copy = {
       "Zwei Bausteine reichen, um Embedded Banking in der Cloud zu starten — danach verbindet HausbankAgent Claude mit Ihren Treasury-, Cash-Management- und Banking-Prozessen.",
     needSteps: [
       {
-        title: "1. Microsoft Business Central",
-        body: "Installieren Sie Business Central als Business-Intelligence-ERP in der Azure Cloud. Die Kosten für die Microsoft-Applikation liegen typischerweise unter ca. 100 € (Lizenz/Plan je nach Angebot und Nutzerzahl — bitte aktuelle Microsoft-Preise prüfen).",
+        title: "1. Microsoft 365",
+        body: "Nutzen Sie das Microsoft 365-Ökosystem in der Azure Cloud als Plattform für Ihren Banking-Stack. Die Kosten für die Microsoft-Applikation liegen typischerweise unter ca. 100 € (Lizenz/Plan je nach Angebot und Nutzerzahl — bitte aktuelle Microsoft-Preise prüfen).",
       },
       {
-        title: "2. Banking-App in Business Central",
-        body: "Installieren Sie die Banking-Applikation (Cash365 / Banqr) in Ihre Business-Central-Umgebung. Damit erhalten Sie Ihre eigene Embedded-Banking-Lösung in der Cloud: Multi-Banking-Zugriff, Zahlungen, Kontoauszüge, virtuelle Konten und weitere Treasury-Funktionen.",
+        title: "2. Banking-App im Microsoft 365-Ökosystem",
+        body: "Installieren Sie die Banking-Applikation (Cash365 / Banqr) in Ihre Microsoft-365-Umgebung. Damit erhalten Sie Ihre eigene Embedded-Banking-Lösung in der Azure Cloud: Multi-Banking-Zugriff, Zahlungen, Kontoauszüge, virtuelle Konten und weitere Treasury-Funktionen.",
       },
       {
         title: "3. HausbankAgent MCP verbinden",
-        body: "Mit Business Central und der Banking-App können Sie über diese Hausbank-Plus-MCP-Integration Embedded Banking mit Claude verknüpfen — und Cash-Management-, Treasury- sowie Banking-Prozesse in der Cloud automatisieren bzw. agilisieren.",
+        body: "Mit Microsoft 365 und der Banking-App können Sie über diese Hausbank-Plus-MCP-Integration Embedded Banking mit Claude verknüpfen — und Cash-Management-, Treasury- sowie Banking-Prozesse in der Cloud automatisieren bzw. agilisieren.",
       },
     ],
     needAlsoTitle: "Für die Claude-Verbindung zusätzlich",
     needAlso: [
       "Microsoft-Arbeitskonto mit Zugriff auf Ihre Company",
-      "Environment-Name wie in Business Central hinterlegt",
+      "Environment-Name wie im Microsoft 365-Ökosystem hinterlegt",
       "Company-GUID (nach Login per Tool listbar)",
     ],
     examplesTitle: "Beispiel-Prompts",
@@ -102,14 +102,14 @@ const copy = {
     tipTitle: "Tipp",
     tipBody:
       "Payment-Links (Starne) sind optional/ausstehend. Payment Drafts, Freigabe und Send payment to bank (hausbank_agent_send_payment_to_bank) sind verfügbar — Bankversand nur nach ausdrücklicher Bestätigung.",
-    whyTitle: "Warum Microsoft Business Central + HausbankAgent?",
+    whyTitle: "Warum Microsoft 365 + HausbankAgent?",
     whyLead:
-      "Mit Microsoft Business Central in der Azure Cloud betreiben Sie eine hochgesicherte Banking-Umgebung, die ein vollständiges Banking-Erlebnis mit einem durchgängigen API-Stack verbindet — und genau darauf dockt HausbankAgent als MCP an.",
+      "Mit dem Microsoft 365-Ökosystem in der Azure Cloud betreiben Sie eine hochgesicherte Banking-Umgebung, die ein vollständiges Banking-Erlebnis mit einem durchgängigen API-Stack verbindet — und genau darauf dockt HausbankAgent als MCP an.",
     whyPoints: [
       "Reine Banking- und Multibank-APIs sind heute oft Ordering-Plattformen: sie eignen sich zum Auslösen von Aufträgen, greifen historische Daten aber nur schwer und begrenzt ab.",
-      "Business Central als cloudgetriebene Anwendung mit Datenbank hält Zahlungen, Kontoauszüge und Transaktionsdaten so lange vor, wie Sie es wünschen — inklusive Freigaben im Vier-Augen-Prinzip, Entwürfen (Draft-Pages) und steuerbaren Benutzerrechten.",
+      "Microsoft 365 als cloudgetriebene Anwendung mit Datenbank hält Zahlungen, Kontoauszüge und Transaktionsdaten so lange vor, wie Sie es wünschen — inklusive Freigaben im Vier-Augen-Prinzip, Entwürfen (Draft-Pages) und steuerbaren Benutzerrechten.",
       "So nutzen Claude und andere LLMs einen deutlich größeren, strukturierten Datenschatz als Bank- oder Multibank-APIs allein bereitstellen können — inkl. Kreditoren, Debitoren, Konten, Statements und Zahlungshistorie.",
-      "EDI und Bankenschnittstellen lassen sich so weit wie möglich ausschöpfen: das ERP orchestriert, die Bank führt aus — HausbankAgent macht diesen Stack für KI-Assistenten steuerbar.",
+      "EDI und Bankenschnittstellen lassen sich so weit wie möglich ausschöpfen: der Microsoft-Banking-Stack in der Azure Cloud orchestriert, die Bank führt aus — HausbankAgent macht diesen Stack für KI-Assistenten steuerbar.",
       "Zielgruppe SME und Midcap: ein Banking-Connector für diesen Bereich, der seinesgleichen sucht.",
     ],
     marketplaceCta: "App im Microsoft Marketplace ansehen (Cash365 / Banqr)",
@@ -120,7 +120,7 @@ const copy = {
     badge: "Documentation",
     title: "HausbankAgent",
     lead:
-      "Connect Claude to your own ERP banking stack via Microsoft Entra. One connector, many tenants — end users never paste a client secret.",
+      "Connect Claude to your own Azure cloud banking stack via Microsoft Entra. One connector, many tenants — end users never paste a client secret.",
     connectTitle: "Connect in Claude",
     connectSteps: [
       "Settings → Connectors → Add custom connector (or Directory).",
@@ -134,22 +134,22 @@ const copy = {
       "Two building blocks are enough to start embedded banking in the cloud — then HausbankAgent connects Claude to your treasury, cash-management and banking processes.",
     needSteps: [
       {
-        title: "1. Microsoft Business Central",
-        body: "Install Business Central as your business-intelligence ERP in the Azure cloud. Cost for the Microsoft application is typically under about EUR 100 (license/plan depends on offer and user count — check current Microsoft pricing).",
+        title: "1. Microsoft 365",
+        body: "Use the Microsoft 365 ecosystem in the Azure cloud as the platform for your banking stack. Cost for the Microsoft application is typically under about EUR 100 (license/plan depends on offer and user count — check current Microsoft pricing).",
       },
       {
-        title: "2. Banking app inside Business Central",
-        body: "Install the banking application (Cash365 / Banqr) into your Business Central environment. You then run your own embedded banking stack in the cloud: multi-bank access, payments, statements, virtual accounts and further treasury capabilities.",
+        title: "2. Banking app in the Microsoft 365 ecosystem",
+        body: "Install the banking application (Cash365 / Banqr) into your Microsoft 365 environment. You then run your own embedded banking stack in the Azure cloud: multi-bank access, payments, statements, virtual accounts and further treasury capabilities.",
       },
       {
         title: "3. Connect HausbankAgent MCP",
-        body: "With Business Central and the banking app in place, this Hausbank Plus MCP integration links embedded banking to Claude — so you can automate or make more agile your cash-management, treasury and banking processes in the cloud.",
+        body: "With Microsoft 365 and the banking app in place, this Hausbank Plus MCP integration links embedded banking to Claude — so you can automate or make more agile your cash-management, treasury and banking processes in the cloud.",
       },
     ],
     needAlsoTitle: "Also needed for the Claude connection",
     needAlso: [
       "Microsoft work account with access to your company",
-      "Environment name as configured in Business Central",
+      "Environment name as configured in the Microsoft 365 ecosystem",
       "Company GUID (listable via tool after login)",
     ],
     examplesTitle: "Example prompts",
@@ -213,14 +213,14 @@ const copy = {
     tipTitle: "Note",
     tipBody:
       "Starne payment links are optional/pending. Payment drafts, approval, and Send payment to bank (hausbank_agent_send_payment_to_bank) are available — require explicit confirmation before bank send.",
-    whyTitle: "Why Microsoft Business Central + HausbankAgent?",
+    whyTitle: "Why Microsoft 365 + HausbankAgent?",
     whyLead:
-      "Running Microsoft Business Central in the Azure cloud gives you a highly secure banking environment that combines a full banking experience with a complete API stack — and HausbankAgent exposes that stack to Claude via MCP.",
+      "Running the Microsoft 365 ecosystem in the Azure cloud gives you a highly secure banking environment that combines a full banking experience with a complete API stack — and HausbankAgent exposes that stack to Claude via MCP.",
     whyPoints: [
       "Pure banking and multibank APIs are often ordering platforms today: strong at initiating instructions, weak at retrieving deep historical data.",
-      "Business Central as a cloud application with a database retains payments, statements and transaction history for as long as you need — with four-eyes approvals, draft pages and fine-grained user rights.",
+      "Microsoft 365 as a cloud application with a database retains payments, statements and transaction history for as long as you need — with four-eyes approvals, draft pages and fine-grained user rights.",
       "Claude and other LLMs can therefore work on a much richer, structured data treasure than bank or multibank APIs alone can provide — vendors, customers, accounts, statements and payment history included.",
-      "EDI and bank interfaces can be leveraged as far as possible: the ERP orchestrates, the bank executes — HausbankAgent makes that stack operable for AI assistants.",
+      "EDI and bank interfaces can be leveraged as far as possible: the Microsoft banking stack in the Azure cloud orchestrates, the bank executes — HausbankAgent makes that stack operable for AI assistants.",
       "Built for SME and mid-cap: a banking connector in this segment that stands apart.",
     ],
     marketplaceCta: "View the app on Microsoft Marketplace (Cash365 / Banqr)",
