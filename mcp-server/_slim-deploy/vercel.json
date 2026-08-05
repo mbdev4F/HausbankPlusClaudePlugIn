@@ -4,6 +4,10 @@
   "regions": ["fra1"],
   "rewrites": [
     { "source": "/mcp", "destination": "/api/mcp" },
-    { "source": "/healthz", "destination": "/api/healthz" }
+    { "source": "/healthz", "destination": "/api/healthz" },
+    {
+      "source": "/.well-known/oauth-protected-resource/api/mcp",
+      "destination": "/.well-known/oauth-protected-resource"
+    }
   ]
 }

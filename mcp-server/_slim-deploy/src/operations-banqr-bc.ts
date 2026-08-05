@@ -17,6 +17,21 @@ function companyPath(segment: string) {
 }
 
 export async function bcProbeAuth() {
+  const { getHausbankSession } = await import("./oauth/session");
+  const session = getHausbankSession();
+  if (session) {
+    return {
+      ok: true,
+      authMode: "oauth_session",
+      tenantId: session.tenantId,
+      environmentName: session.environmentName,
+      companyId: session.companyId || null,
+      oid: session.oid ?? null,
+      name: session.name ?? null,
+      tokenOk: Boolean(session.accessToken),
+    };
+  }
+
   const env = readBanqrBcEnv();
   const err = validateBanqrBcClientCredentials(env);
   let tokenOk = false;
@@ -31,6 +46,7 @@ export async function bcProbeAuth() {
   }
   return {
     ok: tokenOk,
+    authMode: "client_credentials_env",
     hasEnvCredentials: hasBanqrBcEnv(),
     tenantIdPresent: Boolean(env.tenantId),
     environmentNamePresent: Boolean(env.environmentName),

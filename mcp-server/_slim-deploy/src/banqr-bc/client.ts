@@ -1,5 +1,6 @@
 /**
- * Lightweight OData client for Hausbank365 CloudConnector APIs (client_credentials).
+ * Lightweight OData client for Hausbank-Agent CloudConnector APIs.
+ * Prefers OAuth user session (Entra); falls back to env client_credentials.
  */
 
 import {
@@ -7,6 +8,7 @@ import {
   readBanqrBcEnv,
   type BanqrBcEnv,
 } from "./env-config";
+import { getHausbankSession } from "../oauth/session";
 
 type CachedToken = { accessToken: string; expiresAtMs: number; key: string };
 
@@ -66,6 +68,9 @@ async function fetchAccessToken(e: BanqrBcEnv): Promise<{
 export async function getBanqrBcAccessToken(
   e: BanqrBcEnv = readBanqrBcEnv(),
 ): Promise<string> {
+  const session = getHausbankSession();
+  if (session?.accessToken) return session.accessToken;
+
   const key = `${e.tenantId}:${e.clientId}`;
   const now = Date.now();
   if (cached && cached.key === key && now < cached.expiresAtMs - SKEW_MS) {
@@ -78,6 +83,20 @@ export async function getBanqrBcAccessToken(
     key,
   };
   return accessToken;
+}
+
+/** Effective env: OAuth session overrides tenant/environment/company. */
+export function effectiveBanqrBcEnv(
+  e: BanqrBcEnv = readBanqrBcEnv(),
+): BanqrBcEnv {
+  const session = getHausbankSession();
+  if (!session) return e;
+  return {
+    ...e,
+    tenantId: session.tenantId || e.tenantId,
+    environmentName: session.environmentName || e.environmentName,
+    companyId: session.companyId || e.companyId,
+  };
 }
 
 function sleep(ms: number) {
@@ -98,7 +117,7 @@ function resolveCompanyId(e: BanqrBcEnv, override?: string): string {
   const id = (override ?? e.companyId).trim();
   if (!id) {
     throw new Error(
-      "companyId fehlt — HAUSBANK_AGENT_COMPANY_ID setzen oder companyId übergeben (nach hausbank_agent_list_companies).",
+      "companyId fehlt — beim OAuth-Connect angeben oder companyId / hausbank_agent_list_companies nutzen.",
     );
   }
   return id;
@@ -115,16 +134,17 @@ export async function banqrBcRequest<T = unknown>(
   opts: BanqrBcRequestOptions,
   e: BanqrBcEnv = readBanqrBcEnv(),
 ): Promise<{ status: number; data: T; etag?: string }> {
-  const token = await getBanqrBcAccessToken(e);
+  const env = effectiveBanqrBcEnv(e);
+  const token = await getBanqrBcAccessToken(env);
   const method = (opts.method ?? "GET").toUpperCase();
   let path = opts.path.startsWith("/") ? opts.path : `/${opts.path}`;
 
   if (path.includes("{companyId}") || path.includes("{{companyId}}")) {
-    path = withCompany(path, resolveCompanyId(e, opts.companyId));
+    path = withCompany(path, resolveCompanyId(env, opts.companyId));
   }
 
   const qs = opts.query?.replace(/^\?/, "") ?? "";
-  const url = `${banqrBcApiRoot(e)}${path}${qs ? `?${qs}` : ""}`;
+  const url = `${banqrBcApiRoot(env)}${path}${qs ? `?${qs}` : ""}`;
 
   const headers: Record<string, string> = {
     Authorization: `Bearer ${token}`,

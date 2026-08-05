@@ -1,11 +1,18 @@
-# Plugin setup
+# Setup
 
-1. Start `mcp-server` with the relevant connector credentials.
-2. Set `CB_CONNECT_MCP_URL` and `CB_CONNECT_MCP_TOKEN`.
-3. **CB-Connect:** `probe_auth_setup` → `probe_token_and_health`.
-4. **SME Deutsche Bank Connector:** set `SME_DB_*`, call `sme_db_oauth_start`, complete browser OAuth, store `SME_DB_REFRESH_TOKEN`, then `sme_db_probe_auth`.
-5. **finAPI:** `finapi_probe_auth` (+ optional `finapi_provision_user`).
-6. **Better Payment:** `better_payment_probe_auth`, then `create_payment_link` (`wero` / `pay_by_bank`).
-7. Prefer read-only tools before payment tools.
+## Claude Cloud Connector
 
-See `skills/setup/SKILL.md` and `docs/certificates.md`.
+1. URL: `https://hausbank-plus-mcp.vercel.app/api/mcp`
+2. Auth: OAuth (Entra) — after `ENTRA_*` is configured on Vercel
+
+## Entra App Registration
+
+1. **Umleitungs-URI (Web):**  
+   `https://hausbank-plus-mcp.vercel.app/api/oauth/callback`
+2. Kontotyp: **Mehrere Mandanten** (beliebiges Organisationsverzeichnis)
+3. API-Berechtigung: Dynamics 365 Business Central → `user_impersonation` (delegiert)
+4. Clientgeheimnis erzeugen → in Vercel als `ENTRA_CLIENT_SECRET`
+5. Vercel-Env: `ENTRA_CLIENT_ID`, `ENTRA_CLIENT_SECRET`, `OAUTH_SIGNING_SECRET`,  
+   `HAUSBANK_AGENT_PUBLIC_ORIGIN=https://hausbank-plus-mcp.vercel.app`
+
+Beim Connect fragt HausbankAgent nach **Environment** + optional **Company-ID**, dann Microsoft-Login. Tenant kommt aus dem Token.

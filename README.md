@@ -22,7 +22,7 @@ Konnektoren stammen aus **dbHealthflow** / Cash365, entkoppelt vom Next.js-Team-
 | **finAPI** (`mcp-server/src/finapi/`) | Access + Web Form 2.0 |
 | **Hausbank-Agent** (`mcp-server/src/banqr-bc/`) | CloudConnector tools (`hausbank_agent_*`) |
 
-Live Claude Cloud connector currently exposes **finAPI + Hausbank-Agent** only.
+Live Claude Cloud connector currently exposes **Hausbank-Agent** plus one direct finAPI tool: `finapi_initiate_standalone_payment` (payment link for customers).
 
 ```
 Claude ──► MCP ──► sandbox.finapi.io
@@ -61,14 +61,13 @@ OAuth-Callback: `/api/sme-db-oauth/callback` — zeigt den Refresh-Token einmali
 
 ### finAPI (Open Banking)
 
-| Tool | Domäne |
+Full toolkit lives in code; **live Claude connector** exposes only:
+
+| Tool | Zweck |
 | --- | --- |
-| `finapi_probe_auth` / `finapi_provision_user` | Diagnose / User anlegen |
-| `finapi_list_accounts` / `finapi_list_bank_connections` | Konten + Salden |
-| `finapi_list_transactions` | AIS-Umsätze (JSON) |
-| `finapi_start_bank_connection` / `finapi_get_webform_status` | Bank anbinden (Web Form + SCA) |
-| `finapi_initiate_sepa_payment` / `finapi_initiate_standalone_payment` | SEPA via Web Form |
-| `finapi_get_payment_status` | Zahlungsstatus |
+| `finapi_initiate_standalone_payment` | Payment-Link (Web Form URL) für Kunden — Empfänger = deine IBAN |
+
+Weitere direkte finAPI-Tools (Konten, AIS, Bank-Connect, SEPA mit Account-Id, …) sind im Live-Connector deaktiviert. Hausbank-Agent-Tools `hausbank_agent_finapi_*` bleiben verfügbar.
 
 ### Better Payment (Payment Links)
 

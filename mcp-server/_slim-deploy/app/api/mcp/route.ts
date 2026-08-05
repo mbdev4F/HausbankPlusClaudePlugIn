@@ -3,9 +3,9 @@ export const maxDuration = 60;
 
 /**
  * Live MCP for Claude Cloud:
- * - finAPI tools
  * - Hausbank-Agent tools (hausbank_agent_*)
- * CB-Connect / SME are intentionally not exposed here.
+ * - One direct finAPI tool: standalone payment link (customer pays you)
+ * CB-Connect / SME / other direct finAPI AIS tools are not exposed.
  */
 
 import * as finapi from "../../../src/operations-finapi";
@@ -14,6 +14,12 @@ import {
   callBanqrBcTool,
   isBanqrBcTool,
 } from "../../../src/mcp-tools-banqr";
+import {
+  oauthEnabled,
+  parseBearerSession,
+  unauthorizedMcpResponse,
+} from "../../../src/oauth/adapter";
+import { runWithHausbankSession } from "../../../src/oauth/session";
 
 type JsonRpcId = string | number | null;
 
@@ -42,138 +48,35 @@ const tools = [
     inputSchema: { type: "object", properties: { message: { type: "string" } } },
   },
   {
-    name: "finapi_probe_auth",
-    description:
-      "Diagnostics: finAPI env credentials + client/user token probe (no secrets returned).",
-    inputSchema: { type: "object", properties: {} },
-  },
-  {
-    name: "finapi_provision_user",
-    description:
-      "Create a finAPI Access user once. Returns id+password to store as FINAPI_USER_ID / FINAPI_USER_PASSWORD.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        preferredUserId: {
-          type: "string",
-          description: "Optional preferred Access user id",
-        },
-      },
-    },
-  },
-  {
-    name: "finapi_start_bank_connection",
-    description:
-      "Start finAPI bankConnectionImport Web Form 2.0. Returns URL for human SCA in browser.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        callbackUrl: { type: "string" },
-        accountTypes: { type: "array", items: { type: "string" } },
-      },
-    },
-  },
-  {
-    name: "finapi_get_webform_status",
-    description: "Poll finAPI Web Form 2.0 status (bank connect or payment).",
-    inputSchema: {
-      type: "object",
-      properties: { webFormId: { type: "string" } },
-      required: ["webFormId"],
-    },
-  },
-  {
-    name: "finapi_list_bank_connections",
-    description: "List finAPI bank connections for the configured Access user.",
-    inputSchema: { type: "object", properties: {} },
-  },
-  {
-    name: "finapi_list_accounts",
-    description: "List finAPI accounts (with balances) and bank connections.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        bankConnectionIds: { type: "array", items: { type: "number" } },
-      },
-    },
-  },
-  {
-    name: "finapi_list_transactions",
-    description:
-      "List AIS transactions for a finAPI account (JSON bank view, not CAMT).",
-    inputSchema: {
-      type: "object",
-      properties: {
-        accountId: {
-          description: "finAPI account id or finapi:{id}",
-          oneOf: [{ type: "string" }, { type: "number" }],
-        },
-        page: { type: "number" },
-        perPage: { type: "number" },
-      },
-      required: ["accountId"],
-    },
-  },
-  {
     name: "finapi_initiate_standalone_payment",
     description:
-      "Initiate standalone SEPA payment Web Form 2.0 (payer picks bank/account). Destructive. Returns webFormUrl for SCA.",
+      "Create a standalone SEPA payment link (Web Form URL) to send to a customer so they can pay you. Recipient = your IBAN. Customer opens the link, picks their bank, and authorizes. Returns webFormUrl.",
     inputSchema: {
       type: "object",
       properties: {
-        recipientName: { type: "string" },
-        recipientIban: { type: "string" },
+        recipientName: {
+          type: "string",
+          description: "Payee name (you / your company)",
+        },
+        recipientIban: {
+          type: "string",
+          description: "Payee IBAN (your account that receives the money)",
+        },
         recipientBic: { type: "string" },
         amount: { type: "number" },
         currency: { type: "string", default: "EUR" },
         purpose: { type: "string" },
         endToEndId: { type: "string" },
-        senderIban: { type: "string" },
+        senderIban: {
+          type: "string",
+          description: "Optional prefill of payer IBAN",
+        },
         executionDate: { type: "string", description: "YYYY-MM-DD" },
         instantPayment: { type: "boolean" },
         redirectUrl: { type: "string" },
         callbackUrl: { type: "string" },
       },
       required: ["recipientName", "recipientIban", "amount"],
-    },
-  },
-  {
-    name: "finapi_initiate_sepa_payment",
-    description:
-      "Initiate SEPA payment via finAPI paymentWithAccountId Web Form. Returns URL for SCA. Destructive.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        accountId: {
-          description: "Debtor finAPI account id or finapi:{id}",
-          oneOf: [{ type: "string" }, { type: "number" }],
-        },
-        recipientName: { type: "string" },
-        recipientIban: { type: "string" },
-        recipientBic: { type: "string" },
-        amount: { type: "number" },
-        currency: { type: "string", default: "EUR" },
-        purpose: { type: "string" },
-        endToEndId: { type: "string" },
-        senderName: { type: "string" },
-        executionDate: { type: "string", description: "YYYY-MM-DD" },
-        instantPayment: { type: "boolean" },
-        verifyPayees: { type: "boolean" },
-        redirectUrl: { type: "string" },
-        callbackUrl: { type: "string" },
-      },
-      required: ["accountId", "recipientName", "recipientIban", "amount"],
-    },
-  },
-  {
-    name: "finapi_get_payment_status",
-    description: "Query finAPI Access API payment status by payment id(s).",
-    inputSchema: {
-      type: "object",
-      properties: {
-        paymentIds: { type: "array", items: { type: "number" }, minItems: 1 },
-      },
-      required: ["paymentIds"],
     },
   },
   ...banqrBcTools,
@@ -206,7 +109,7 @@ async function handleMessage(message: {
         version: "0.3.0",
       },
       instructions:
-        "This connector is HausbankAgent. Prefer tools named hausbank_agent_* and finapi_*. Never refer to it as DB, CB-Connect, or Business Central.",
+        "This connector is HausbankAgent. After Entra OAuth, tenant is fixed; environment/company were set at login. Use hausbank_agent_* tools. Only direct finAPI tool: finapi_initiate_standalone_payment (customer payment link). Never say Business Central / DB / CB-Connect.",
     });
   }
 
@@ -229,76 +132,6 @@ async function handleMessage(message: {
         return ok(id, toolResult({ ok: true, echo: messageText }));
       }
 
-      if (name === "finapi_probe_auth") {
-        return ok(id, toolResult(await finapi.finapiProbeAuth()));
-      }
-      if (name === "finapi_provision_user") {
-        const preferredUserId =
-          typeof args.preferredUserId === "string"
-            ? args.preferredUserId
-            : undefined;
-        return ok(
-          id,
-          toolResult(await finapi.finapiProvisionUser(preferredUserId)),
-        );
-      }
-      if (name === "finapi_start_bank_connection") {
-        return ok(
-          id,
-          toolResult(
-            await finapi.finapiStartBankConnection({
-              callbackUrl:
-                typeof args.callbackUrl === "string"
-                  ? args.callbackUrl
-                  : undefined,
-              accountTypes: Array.isArray(args.accountTypes)
-                ? (args.accountTypes as string[])
-                : undefined,
-            }),
-          ),
-        );
-      }
-      if (name === "finapi_get_webform_status") {
-        return ok(
-          id,
-          toolResult(
-            await finapi.finapiGetWebformStatus({
-              webFormId: String(args.webFormId ?? ""),
-            }),
-          ),
-        );
-      }
-      if (name === "finapi_list_bank_connections") {
-        return ok(id, toolResult(await finapi.finapiListBankConnections()));
-      }
-      if (name === "finapi_list_accounts") {
-        return ok(
-          id,
-          toolResult(
-            await finapi.finapiListAccounts({
-              bankConnectionIds: Array.isArray(args.bankConnectionIds)
-                ? (args.bankConnectionIds as number[])
-                : undefined,
-            }),
-          ),
-        );
-      }
-      if (name === "finapi_list_transactions") {
-        if (args.accountId === undefined || args.accountId === null) {
-          return ok(id, toolResult({ error: "accountId is required" }, true));
-        }
-        return ok(
-          id,
-          toolResult(
-            await finapi.finapiListTransactions({
-              accountId: args.accountId as string | number,
-              page: typeof args.page === "number" ? args.page : undefined,
-              perPage:
-                typeof args.perPage === "number" ? args.perPage : undefined,
-            }),
-          ),
-        );
-      }
       if (name === "finapi_initiate_standalone_payment") {
         const recipientName = String(args.recipientName ?? "");
         const recipientIban = String(args.recipientIban ?? "");
@@ -358,91 +191,6 @@ async function handleMessage(message: {
           ),
         );
       }
-      if (name === "finapi_initiate_sepa_payment") {
-        const recipientName = String(args.recipientName ?? "");
-        const recipientIban = String(args.recipientIban ?? "");
-        const amount = Number(args.amount);
-        if (
-          args.accountId === undefined ||
-          args.accountId === null ||
-          !recipientName ||
-          !recipientIban ||
-          !(amount > 0)
-        ) {
-          return ok(
-            id,
-            toolResult(
-              {
-                error:
-                  "accountId, recipientName, recipientIban and positive amount are required",
-              },
-              true,
-            ),
-          );
-        }
-        return ok(
-          id,
-          toolResult(
-            await finapi.finapiInitiateSepaPayment({
-              accountId: args.accountId as string | number,
-              recipientName,
-              recipientIban,
-              recipientBic:
-                typeof args.recipientBic === "string"
-                  ? args.recipientBic
-                  : undefined,
-              amount,
-              currency:
-                typeof args.currency === "string" ? args.currency : "EUR",
-              purpose:
-                typeof args.purpose === "string" ? args.purpose : undefined,
-              endToEndId:
-                typeof args.endToEndId === "string"
-                  ? args.endToEndId
-                  : undefined,
-              senderName:
-                typeof args.senderName === "string"
-                  ? args.senderName
-                  : undefined,
-              executionDate:
-                typeof args.executionDate === "string"
-                  ? args.executionDate
-                  : undefined,
-              instantPayment:
-                typeof args.instantPayment === "boolean"
-                  ? args.instantPayment
-                  : undefined,
-              verifyPayees:
-                typeof args.verifyPayees === "boolean"
-                  ? args.verifyPayees
-                  : undefined,
-              redirectUrl:
-                typeof args.redirectUrl === "string"
-                  ? args.redirectUrl
-                  : undefined,
-              callbackUrl:
-                typeof args.callbackUrl === "string"
-                  ? args.callbackUrl
-                  : undefined,
-            }),
-          ),
-        );
-      }
-      if (name === "finapi_get_payment_status") {
-        const paymentIds = Array.isArray(args.paymentIds)
-          ? (args.paymentIds as number[])
-          : [];
-        if (!paymentIds.length) {
-          return ok(
-            id,
-            toolResult({ error: "paymentIds must be a non-empty array" }, true),
-          );
-        }
-        return ok(
-          id,
-          toolResult(await finapi.finapiGetPaymentStatus({ paymentIds })),
-        );
-      }
 
       if (isBanqrBcTool(name)) {
         const result = await callBanqrBcTool(name, args);
@@ -469,6 +217,17 @@ async function handleMessage(message: {
 
 export async function POST(req: Request) {
   try {
+    if (oauthEnabled()) {
+      const session = parseBearerSession(req);
+      if (!session) {
+        return unauthorizedMcpResponse();
+      }
+      const message = await req.json();
+      return await runWithHausbankSession(session, () =>
+        handleMessage(message),
+      );
+    }
+
     const message = await req.json();
     return await handleMessage(message);
   } catch (e) {
@@ -481,7 +240,11 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  if (oauthEnabled()) {
+    const session = parseBearerSession(req);
+    if (!session) return unauthorizedMcpResponse();
+  }
   return new Response("Method Not Allowed", { status: 405 });
 }
 
