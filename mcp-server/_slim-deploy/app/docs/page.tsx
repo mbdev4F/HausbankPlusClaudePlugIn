@@ -19,9 +19,26 @@ const copy = {
       "Mit Microsoft anmelden. Einmalig ggf. Admin-Consent im Tenant.",
     ],
     needTitle: "Voraussetzungen",
-    needItems: [
-      "Microsoft-Arbeitskonto mit Zugriff auf eure Firma",
-      "Environment-Name wie in eurem ERP hinterlegt",
+    needLead:
+      "Zwei Bausteine reichen, um Embedded Banking in der Cloud zu starten — danach verbindet HausbankAgent Claude mit Ihren Treasury-, Cash-Management- und Banking-Prozessen.",
+    needSteps: [
+      {
+        title: "1. Microsoft Business Central",
+        body: "Installieren Sie Business Central als Business-Intelligence-ERP in der Azure Cloud. Die Kosten für die Microsoft-Applikation liegen typischerweise unter ca. 100 € (Lizenz/Plan je nach Angebot und Nutzerzahl — bitte aktuelle Microsoft-Preise prüfen).",
+      },
+      {
+        title: "2. Banking-App in Business Central",
+        body: "Installieren Sie die Banking-Applikation (Cash365 / Banqr) in Ihre Business-Central-Umgebung. Damit erhalten Sie Ihre eigene Embedded-Banking-Lösung in der Cloud: Multi-Banking-Zugriff, Zahlungen, Kontoauszüge, virtuelle Konten und weitere Treasury-Funktionen.",
+      },
+      {
+        title: "3. HausbankAgent MCP verbinden",
+        body: "Mit Business Central und der Banking-App können Sie über diese Hausbank-Plus-MCP-Integration Embedded Banking mit Claude verknüpfen — und Cash-Management-, Treasury- sowie Banking-Prozesse in der Cloud automatisieren bzw. agilisieren.",
+      },
+    ],
+    needAlsoTitle: "Für die Claude-Verbindung zusätzlich",
+    needAlso: [
+      "Microsoft-Arbeitskonto mit Zugriff auf Ihre Company",
+      "Environment-Name wie in Business Central hinterlegt",
       "Company-GUID (nach Login per Tool listbar)",
     ],
     examplesTitle: "Beispiel-Prompts",
@@ -112,10 +129,27 @@ const copy = {
       "Enter Environment name (e.g. Production) and optional Company GUID.",
       "Sign in with Microsoft. Admin consent may be required once per tenant.",
     ],
-    needTitle: "What you need",
-    needItems: [
+    needTitle: "Prerequisites",
+    needLead:
+      "Two building blocks are enough to start embedded banking in the cloud — then HausbankAgent connects Claude to your treasury, cash-management and banking processes.",
+    needSteps: [
+      {
+        title: "1. Microsoft Business Central",
+        body: "Install Business Central as your business-intelligence ERP in the Azure cloud. Cost for the Microsoft application is typically under about EUR 100 (license/plan depends on offer and user count — check current Microsoft pricing).",
+      },
+      {
+        title: "2. Banking app inside Business Central",
+        body: "Install the banking application (Cash365 / Banqr) into your Business Central environment. You then run your own embedded banking stack in the cloud: multi-bank access, payments, statements, virtual accounts and further treasury capabilities.",
+      },
+      {
+        title: "3. Connect HausbankAgent MCP",
+        body: "With Business Central and the banking app in place, this Hausbank Plus MCP integration links embedded banking to Claude — so you can automate or make more agile your cash-management, treasury and banking processes in the cloud.",
+      },
+    ],
+    needAlsoTitle: "Also needed for the Claude connection",
+    needAlso: [
       "Microsoft work account with access to your company",
-      "Environment name as configured in your ERP",
+      "Environment name as configured in Business Central",
       "Company GUID (listable via tool after login)",
     ],
     examplesTitle: "Example prompts",
@@ -311,8 +345,25 @@ export default function DocsPage() {
           <h2 className="font-[family-name:var(--font-display)] text-2xl text-forest-deep">
             {t.needTitle}
           </h2>
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-ink-muted">
-            {t.needItems.map((item) => (
+          <p className="mt-3 text-ink-muted leading-relaxed">{t.needLead}</p>
+          <ol className="mt-5 space-y-4">
+            {t.needSteps.map((step) => (
+              <li
+                key={step.title}
+                className="rounded-xl border border-highlight bg-highlight/50 px-4 py-3"
+              >
+                <p className="font-semibold text-forest">{step.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+                  {step.body}
+                </p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-5 text-sm font-semibold uppercase tracking-wide text-amber">
+            {t.needAlsoTitle}
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink-muted">
+            {t.needAlso.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
