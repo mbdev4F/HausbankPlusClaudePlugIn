@@ -586,6 +586,54 @@ export async function bcLoadCamtXml(args: {
 
 // ─── Payments ────────────────────────────────────────────────────────────
 
+/**
+ * Starne Payment Link — Hausbank-Agent API for customer standalone payment URLs.
+ * CloudConnector: POST payment/v1.0/.../starnePaymentLinks
+ * (finAPI user credentials live in Hausbank-Agent, not in this MCP.)
+ */
+export async function bcCreateStarnePaymentLink(args: {
+  recipientName: string;
+  recipientIban: string;
+  recipientBic?: string;
+  amount: number;
+  currency?: string;
+  purpose?: string;
+  endToEndId?: string;
+  senderIban?: string;
+  executionDate?: string;
+  instantPayment?: boolean;
+  redirectUrl?: string;
+  callbackUrl?: string;
+  companyId?: string;
+}) {
+  const body: Record<string, unknown> = {
+    recipientName: args.recipientName,
+    recipientIban: args.recipientIban.replace(/\s/g, ""),
+    amount: args.amount,
+    currency: (args.currency ?? "EUR").toUpperCase(),
+  };
+  if (args.recipientBic?.trim()) body.recipientBic = args.recipientBic.trim();
+  if (args.purpose?.trim()) body.purpose = args.purpose.trim();
+  if (args.endToEndId?.trim()) body.endToEndId = args.endToEndId.trim();
+  if (args.senderIban?.trim()) {
+    body.senderIban = args.senderIban.replace(/\s/g, "");
+  }
+  if (args.executionDate?.trim()) body.executionDate = args.executionDate.trim();
+  if (typeof args.instantPayment === "boolean") {
+    body.instantPayment = args.instantPayment;
+  }
+  if (args.redirectUrl?.trim()) body.redirectUrl = args.redirectUrl.trim();
+  if (args.callbackUrl?.trim()) body.callbackUrl = args.callbackUrl.trim();
+
+  const { data, status } = await banqrBcRequest({
+    method: "POST",
+    path: `${companyPath("payment/v1.0")}/starnePaymentLinks`,
+    body,
+    companyId: args.companyId,
+  });
+  return { ok: true, status, data };
+}
+
 export async function bcListPayments(args?: {
   query?: string;
   companyId?: string;

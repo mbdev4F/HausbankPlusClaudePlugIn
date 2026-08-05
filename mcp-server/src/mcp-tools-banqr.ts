@@ -152,6 +152,39 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
+    name: "hausbank_agent_starne_payment_link",
+    description:
+      "Starne Payment Link: create a customer standalone payment URL via Hausbank-Agent (finAPI handled inside the agent). Recipient = your IBAN. Returns payment link URL from CloudConnector starnePaymentLinks.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        recipientName: {
+          type: "string",
+          description: "Payee name (you / your company)",
+        },
+        recipientIban: {
+          type: "string",
+          description: "Payee IBAN (your account that receives the money)",
+        },
+        recipientBic: { type: "string" },
+        amount: { type: "number", description: "Amount in major units, e.g. 50.0" },
+        currency: { type: "string", default: "EUR" },
+        purpose: { type: "string" },
+        endToEndId: { type: "string" },
+        senderIban: {
+          type: "string",
+          description: "Optional prefill of payer IBAN",
+        },
+        executionDate: { type: "string", description: "YYYY-MM-DD" },
+        instantPayment: { type: "boolean" },
+        redirectUrl: { type: "string" },
+        callbackUrl: { type: "string" },
+        companyId,
+      },
+      required: ["recipientName", "recipientIban", "amount"],
+    },
+  },
+  {
     name: "hausbank_agent_list_vendors",
     description: "List vendor counterparties (Hausbank-Agent recipient API).",
     inputSchema: { type: "object", properties: { query, companyId } },
@@ -646,6 +679,34 @@ export async function callBanqrBcTool(
         body: obj(args.body),
         companyId: str(args.companyId),
       });
+    case "hausbank_agent_starne_payment_link": {
+      const recipientName = String(args.recipientName ?? "");
+      const recipientIban = String(args.recipientIban ?? "");
+      const amount = Number(args.amount);
+      if (!recipientName || !recipientIban || !(amount > 0)) {
+        throw new Error(
+          "recipientName, recipientIban and positive amount are required",
+        );
+      }
+      return bc.bcCreateStarnePaymentLink({
+        recipientName,
+        recipientIban,
+        recipientBic: str(args.recipientBic),
+        amount,
+        currency: str(args.currency) ?? "EUR",
+        purpose: str(args.purpose),
+        endToEndId: str(args.endToEndId),
+        senderIban: str(args.senderIban),
+        executionDate: str(args.executionDate),
+        instantPayment:
+          typeof args.instantPayment === "boolean"
+            ? args.instantPayment
+            : undefined,
+        redirectUrl: str(args.redirectUrl),
+        callbackUrl: str(args.callbackUrl),
+        companyId: str(args.companyId),
+      });
+    }
     case "hausbank_agent_list_vendors":
       return bc.bcListVendors({
         query: str(args.query),

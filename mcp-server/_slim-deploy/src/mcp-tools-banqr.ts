@@ -40,24 +40,46 @@ export const banqrBcTools: ToolDef[] = [
     inputSchema: { type: "object", properties: {} },
   },
   {
-    name: "hausbank_agent_request",
+    name: "hausbank_agent_read_request",
     description:
-      "Low-level Hausbank-Agent API call. Path may include {companyId}. Prefer named hausbank_agent_* tools when possible.",
+      "Read-only Hausbank-Agent API GET. Path may include {companyId}. Prefer named hausbank_agent_* tools. Banqr CloudConnector OData under the connected tenant/environment.",
     inputSchema: {
       type: "object",
       properties: {
-        method: { type: "string", description: "GET|POST|PATCH|PUT|DELETE" },
         path: {
           type: "string",
           description:
-            "Path under BC env root, e.g. /api/banqr/bankaccounts/v1.1/companies({companyId})/accounts",
+            "Path under API root, e.g. /api/banqr/bankaccounts/v1.1/companies({companyId})/accounts",
+        },
+        query: query,
+        companyId,
+      },
+      required: ["path"],
+    },
+  },
+  {
+    name: "hausbank_agent_write_request",
+    description:
+      "Write Hausbank-Agent API call (POST|PATCH|PUT|DELETE only). Path may include {companyId}. Prefer named hausbank_agent_* tools. Banqr CloudConnector OData under the connected tenant/environment.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        method: {
+          type: "string",
+          description: "POST|PATCH|PUT|DELETE",
+          enum: ["POST", "PATCH", "PUT", "DELETE"],
+        },
+        path: {
+          type: "string",
+          description:
+            "Path under API root, e.g. /api/banqr/payments/v1.0/companies({companyId})/payments",
         },
         query: query,
         body: body,
         ifMatch: { type: "string" },
         companyId,
       },
-      required: ["path"],
+      required: ["method", "path"],
     },
   },
   {
@@ -495,15 +517,6 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
-    name: "hausbank_agent_send_payment_to_bank",
-    description: "Send payment to bank (bound action).",
-    inputSchema: {
-      type: "object",
-      properties: { paymentId: { type: "string" }, body, companyId },
-      required: ["paymentId"],
-    },
-  },
-  {
     name: "hausbank_agent_update_payment_status_from_bank",
     description: "Refresh payment status from bank.",
     inputSchema: {
@@ -583,7 +596,32 @@ export async function callBanqrBcTool(
       return bc.bcProbeAuth();
     case "hausbank_agent_list_companies":
       return bc.bcListCompanies();
+    case "hausbank_agent_read_request":
+      return bc.bcRequest({
+        method: "GET",
+        path: String(args.path ?? ""),
+        query: str(args.query),
+        companyId: str(args.companyId),
+      });
+    case "hausbank_agent_write_request": {
+      const method = (str(args.method) ?? "").toUpperCase();
+      if (!["POST", "PATCH", "PUT", "DELETE"].includes(method)) {
+        return {
+          ok: false,
+          error: "method must be POST, PATCH, PUT, or DELETE (use hausbank_agent_read_request for GET)",
+        };
+      }
+      return bc.bcRequest({
+        method,
+        path: String(args.path ?? ""),
+        query: str(args.query),
+        body: args.body,
+        ifMatch: str(args.ifMatch),
+        companyId: str(args.companyId),
+      });
+    }
     case "hausbank_agent_request":
+      // Legacy alias — prefer read/write split for directory compliance
       return bc.bcRequest({
         method: str(args.method),
         path: String(args.path ?? ""),
@@ -646,6 +684,34 @@ export async function callBanqrBcTool(
         body: obj(args.body),
         companyId: str(args.companyId),
       });
+    case "hausbank_agent_starne_payment_link": {
+      const recipientName = String(args.recipientName ?? "");
+      const recipientIban = String(args.recipientIban ?? "");
+      const amount = Number(args.amount);
+      if (!recipientName || !recipientIban || !(amount > 0)) {
+        throw new Error(
+          "recipientName, recipientIban and positive amount are required",
+        );
+      }
+      return bc.bcCreateStarnePaymentLink({
+        recipientName,
+        recipientIban,
+        recipientBic: str(args.recipientBic),
+        amount,
+        currency: str(args.currency) ?? "EUR",
+        purpose: str(args.purpose),
+        endToEndId: str(args.endToEndId),
+        senderIban: str(args.senderIban),
+        executionDate: str(args.executionDate),
+        instantPayment:
+          typeof args.instantPayment === "boolean"
+            ? args.instantPayment
+            : undefined,
+        redirectUrl: str(args.redirectUrl),
+        callbackUrl: str(args.callbackUrl),
+        companyId: str(args.companyId),
+      });
+    }
     case "hausbank_agent_list_vendors":
       return bc.bcListVendors({
         query: str(args.query),

@@ -22,11 +22,11 @@ Konnektoren stammen aus **dbHealthflow** / Cash365, entkoppelt vom Next.js-Team-
 | **finAPI** (`mcp-server/src/finapi/`) | Access + Web Form 2.0 |
 | **Hausbank-Agent** (`mcp-server/src/banqr-bc/`) | CloudConnector tools (`hausbank_agent_*`) |
 
-Live Claude Cloud connector currently exposes **Hausbank-Agent** plus one direct finAPI tool: `finapi_initiate_standalone_payment` (payment link for customers).
+Live Claude Cloud connector currently exposes **Hausbank-Agent** tools only (incl. **Starne Payment Link**).
 
 ```
-Claude ──► MCP ──► sandbox.finapi.io
-              └──► Hausbank-Agent CloudConnector APIs
+Claude ──► MCP ──► Hausbank-Agent CloudConnector APIs
+                      └── Starne Payment Link (standalone payment URL)
 ```
 
 ## Tools
@@ -61,13 +61,15 @@ OAuth-Callback: `/api/sme-db-oauth/callback` — zeigt den Refresh-Token einmali
 
 ### finAPI (Open Banking)
 
-Full toolkit lives in code; **live Claude connector** exposes only:
+Direkte finAPI-Tools (Konten, AIS, Bank-Connect, …) sind im **Live-Connector deaktiviert**. Open-Banking-Setup läuft über Hausbank-Agent (`hausbank_agent_finapi_*`).
+
+### Starne Payment Link (Hausbank-Agent)
 
 | Tool | Zweck |
 | --- | --- |
-| `finapi_initiate_standalone_payment` | Payment-Link (Web Form URL) für Kunden — Empfänger = deine IBAN |
+| `hausbank_agent_starne_payment_link` | Customer Payment-Link (Standalone) — Empfänger = deine IBAN; finAPI-User liegt im Hausbank-Agent |
 
-Weitere direkte finAPI-Tools (Konten, AIS, Bank-Connect, SEPA mit Account-Id, …) sind im Live-Connector deaktiviert. Hausbank-Agent-Tools `hausbank_agent_finapi_*` bleiben verfügbar.
+CloudConnector: `POST …/payment/v1.0/companies({companyId})/starnePaymentLinks`
 
 ### Better Payment (Payment Links)
 

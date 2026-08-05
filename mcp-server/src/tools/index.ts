@@ -286,27 +286,6 @@ export function registerTools(server: McpServer) {
   );
 
   server.tool(
-    "finapi_initiate_standalone_payment",
-    "Initiate standalone SEPA payment Web Form (payer picks bank/account). Destructive.",
-    {
-      recipientName: z.string(),
-      recipientIban: z.string(),
-      recipientBic: z.string().optional(),
-      amount: z.number().positive(),
-      currency: z.string().default("EUR"),
-      purpose: z.string().optional(),
-      endToEndId: z.string().optional(),
-      senderIban: z.string().optional(),
-      executionDate: z.string().optional().describe("YYYY-MM-DD"),
-      instantPayment: z.boolean().optional(),
-      redirectUrl: z.string().url().optional(),
-      callbackUrl: z.string().url().optional(),
-    },
-    destructive,
-    async (args) => run(() => finapi.finapiInitiateStandalonePayment(args))
-  );
-
-  server.tool(
     "finapi_get_payment_status",
     "Query finAPI Access API payment status by payment id(s).",
     {

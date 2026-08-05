@@ -4,16 +4,15 @@ export const maxDuration = 60;
 /**
  * Live MCP for Claude Cloud:
  * - Hausbank-Agent tools (hausbank_agent_*)
- * - One direct finAPI tool: standalone payment link (customer pays you)
- * CB-Connect / SME / other direct finAPI AIS tools are not exposed.
+ * Payment-link / send-to-bank tools are omitted for Connectors Directory policy.
  */
 
-import * as finapi from "../../../src/operations-finapi";
 import {
   banqrBcTools,
   callBanqrBcTool,
   isBanqrBcTool,
 } from "../../../src/mcp-tools-banqr";
+import { annotateTools } from "../../../src/mcp-tool-meta";
 import {
   oauthEnabled,
   parseBearerSession,
@@ -41,46 +40,42 @@ function toolResult(data: unknown, isError = false) {
   };
 }
 
-const tools = [
+/** Soft Origin check — allow server-side callers (no Origin) and Claude hosts. */
+function originRejected(req: Request): Response | null {
+  const origin = req.headers.get("origin");
+  if (!origin) return null;
+  let host = "";
+  try {
+    host = new URL(origin).hostname.toLowerCase();
+  } catch {
+    return new Response(JSON.stringify({ error: "invalid_origin" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  const okHost =
+    host === "claude.ai" ||
+    host === "www.claude.ai" ||
+    host === "claude.com" ||
+    host.endsWith(".claude.ai") ||
+    host.endsWith(".anthropic.com") ||
+    host === "localhost" ||
+    host === "127.0.0.1";
+  if (okHost) return null;
+  return new Response(JSON.stringify({ error: "origin_not_allowed" }), {
+    status: 403,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+const tools = annotateTools([
   {
     name: "ping",
     description: "Connectivity check for the HausbankAgent Claude connector.",
     inputSchema: { type: "object", properties: { message: { type: "string" } } },
   },
-  {
-    name: "finapi_initiate_standalone_payment",
-    description:
-      "Create a standalone SEPA payment link (Web Form URL) to send to a customer so they can pay you. Recipient = your IBAN. Customer opens the link, picks their bank, and authorizes. Returns webFormUrl.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        recipientName: {
-          type: "string",
-          description: "Payee name (you / your company)",
-        },
-        recipientIban: {
-          type: "string",
-          description: "Payee IBAN (your account that receives the money)",
-        },
-        recipientBic: { type: "string" },
-        amount: { type: "number" },
-        currency: { type: "string", default: "EUR" },
-        purpose: { type: "string" },
-        endToEndId: { type: "string" },
-        senderIban: {
-          type: "string",
-          description: "Optional prefill of payer IBAN",
-        },
-        executionDate: { type: "string", description: "YYYY-MM-DD" },
-        instantPayment: { type: "boolean" },
-        redirectUrl: { type: "string" },
-        callbackUrl: { type: "string" },
-      },
-      required: ["recipientName", "recipientIban", "amount"],
-    },
-  },
   ...banqrBcTools,
-];
+]);
 
 async function handleMessage(message: {
   jsonrpc?: string;
@@ -106,10 +101,10 @@ async function handleMessage(message: {
       serverInfo: {
         name: "HausbankAgent",
         title: "HausbankAgent",
-        version: "0.3.0",
+        version: "0.4.0",
       },
       instructions:
-        "This connector is HausbankAgent. After Entra OAuth, tenant is fixed; environment/company were set at login. Use hausbank_agent_* tools. Only direct finAPI tool: finapi_initiate_standalone_payment (customer payment link). Never say Business Central / DB / CB-Connect.",
+        "HausbankAgent connects to the user's own ERP banking APIs via Microsoft Entra. Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payments, statements, and G4C search. Never say Business Central, DB, or CB-Connect.",
     });
   }
 
@@ -130,66 +125,6 @@ async function handleMessage(message: {
         const messageText =
           typeof args.message === "string" ? args.message : "pong";
         return ok(id, toolResult({ ok: true, echo: messageText }));
-      }
-
-      if (name === "finapi_initiate_standalone_payment") {
-        const recipientName = String(args.recipientName ?? "");
-        const recipientIban = String(args.recipientIban ?? "");
-        const amount = Number(args.amount);
-        if (!recipientName || !recipientIban || !(amount > 0)) {
-          return ok(
-            id,
-            toolResult(
-              {
-                error:
-                  "recipientName, recipientIban and positive amount are required",
-              },
-              true,
-            ),
-          );
-        }
-        return ok(
-          id,
-          toolResult(
-            await finapi.finapiInitiateStandalonePayment({
-              recipientName,
-              recipientIban,
-              recipientBic:
-                typeof args.recipientBic === "string"
-                  ? args.recipientBic
-                  : undefined,
-              amount,
-              currency:
-                typeof args.currency === "string" ? args.currency : "EUR",
-              purpose:
-                typeof args.purpose === "string" ? args.purpose : undefined,
-              endToEndId:
-                typeof args.endToEndId === "string"
-                  ? args.endToEndId
-                  : undefined,
-              senderIban:
-                typeof args.senderIban === "string"
-                  ? args.senderIban
-                  : undefined,
-              executionDate:
-                typeof args.executionDate === "string"
-                  ? args.executionDate
-                  : undefined,
-              instantPayment:
-                typeof args.instantPayment === "boolean"
-                  ? args.instantPayment
-                  : undefined,
-              redirectUrl:
-                typeof args.redirectUrl === "string"
-                  ? args.redirectUrl
-                  : undefined,
-              callbackUrl:
-                typeof args.callbackUrl === "string"
-                  ? args.callbackUrl
-                  : undefined,
-            }),
-          ),
-        );
       }
 
       if (isBanqrBcTool(name)) {
@@ -217,6 +152,9 @@ async function handleMessage(message: {
 
 export async function POST(req: Request) {
   try {
+    const blocked = originRejected(req);
+    if (blocked) return blocked;
+
     if (oauthEnabled()) {
       const session = parseBearerSession(req);
       if (!session) {
