@@ -9,7 +9,7 @@ Guide the user through Hausbank-Agent connectivity. Do this once unless they ask
 
 ## Steps
 
-1. Confirm the **HausbankAgent** MCP connector is available (OAuth / Entra). If missing, point them to Connect URL `https://hausbank-plus-mcp.vercel.app/api/mcp` or Plugin MCP install.
+1. Confirm the **HausbankAgent** MCP connector is available (OAuth / Entra). If missing, point them to Connect URL `https://hausbank-plus-mcp.vercel.app/api/mcp` or install plugin `hausbank-agent@hausbank-agent`.
 2. Call `hausbank_agent_probe_auth` — report env/token health without secrets.
 3. Call `hausbank_agent_list_companies` — help pick the company GUID if more than one.
 4. Call `hausbank_agent_get_setup` — summarize setup state (certificates, secrets present/missing; never print secret values).

@@ -23,13 +23,15 @@ claude plugin validate
 claude --plugin-dir .
 ```
 
-Slash commands (namespaced): `/HausbankAgent:setup`, `:dashboard`, `:party`, `:pay-draft`, `:uetr`.
+Slash commands (namespaced): `/hausbank-agent:setup`, `:dashboard`, `:party`, `:pay-draft`, `:uetr`.
 
 ### Install from this repo (marketplace)
 
+Marketplace- und Plugin-Name müssen **kebab-case** sein (`hausbank-agent`) — sonst schlägt Claude.ai Sync fehl.
+
 ```text
 /plugin marketplace add mbdev4F/HausbankPlusClaudePlugIn
-/plugin install HausbankAgent@HausbankAgent
+/plugin install hausbank-agent@hausbank-agent
 ```
 
 Or install by path while developing: `claude --plugin-dir <path-to-this-repo>`.

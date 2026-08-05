@@ -1,7 +1,7 @@
 {
-  "name": "HausbankAgent",
-  "version": "0.7.0",
-  "description": "HausbankAgent erschließt vor allem Deutsche-Bank-Fähigkeiten und additiv über einen PSD2-Connector rund 9.200 europäische Banken. Die Embedded Banking App ist das Multi-Banking-Gehirn (Kontoauszüge, Kontodaten, Zahlungsprozesse); dieses Plugin hilft Claude, den Konnektor bestmöglich zu nutzen — Setup, Dashboard, Kreditoren/Debitoren, Payment Drafts inkl. Freigabe, SWIFT/UETR. Bankinitiierung bleibt in der App.",
+  "name": "hausbank-agent",
+  "version": "0.7.1",
+  "description": "HausbankAgent: primarily Deutsche Bank capabilities, plus PSD2 access to ~9200 European banks. The embedded banking app is the multi-banking brain (statements, account data, payment flows). This plugin helps Claude use the connector well — setup, dashboard, vendors/customers, payment drafts + approval, SWIFT/UETR. Bank initiation stays in the app.",
   "author": {
     "name": "mbdev4F"
   },

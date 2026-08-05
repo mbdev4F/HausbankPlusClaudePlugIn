@@ -1,16 +1,18 @@
 {
-  "name": "HausbankAgent",
+  "name": "hausbank-agent",
   "owner": {
-    "name": "mbdev4F"
+    "name": "mbdev4F",
+    "url": "https://github.com/mbdev4F"
   },
   "metadata": {
-    "description": "HausbankAgent — Deutsche Bank plus PSD2 Multi-Banking (~9.200 EU-Banken); Plugin für optimalen Konnektor-Einsatz"
+    "description": "HausbankAgent - Deutsche Bank plus PSD2 Multi-Banking (~9200 EU banks); plugin for the connector"
   },
   "plugins": [
     {
-      "name": "HausbankAgent",
+      "name": "hausbank-agent",
       "source": "./",
-      "description": "HausbankAgent: Deutsche-Bank-Fähigkeiten und PSD2-Zugriff auf ca. 9.200 europäische Banken. Die Embedded App bündelt Multi-Banking; das Plugin hilft Claude, den Konnektor bestmöglich zu nutzen."
+      "version": "0.7.1",
+      "description": "HausbankAgent: Deutsche Bank capabilities plus PSD2 access to ~9200 European banks. The embedded app is the multi-banking brain; this plugin helps Claude use the connector well."
     }
   ]
 }
