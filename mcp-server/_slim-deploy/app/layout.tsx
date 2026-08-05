@@ -16,7 +16,8 @@ const sans = Source_Sans_3({
 
 export const metadata = {
   title: "HausbankAgent",
-  description: "Remote MCP connector — docs, privacy, Entra OAuth",
+  description:
+    "HausbankAgent — Deutsche Bank plus PSD2 Multi-Banking (~9.200 EU-Banken); MCP für Claude",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

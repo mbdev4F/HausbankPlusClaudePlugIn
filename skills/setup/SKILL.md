@@ -1,18 +1,26 @@
 ---
 name: setup
-description: This skill should be used when the user installs or configures CB-Connect, SME Deutsche Bank Connector, finAPI, or Better Payment for the Claude plugin.
+description: One-time Hausbank-Agent MCP setup — auth, company, roles/rights, and connector health. Use when the user installs the plugin, connects for the first time, or asks to configure banking access.
 ---
 
-# Setup — alle Konnektoren
+# Setup (once)
 
-1. MCP-Server starten (`mcp-server`: `npm run dev`).
-2. `CB_CONNECT_MCP_URL` + `CB_CONNECT_MCP_TOKEN` setzen.
-3. **CB-Connect (Enterprise):** `CBCON_*` + Zertifikat → `probe_auth_setup` / `probe_token_and_health`.
-4. **SME Deutsche Bank Connector** (Biz-Banking / Business Connector):
-   - `SME_DB_CLIENT_ID` / `SME_DB_CLIENT_SECRET` / `SME_DB_PUBLIC_ORIGIN`
-   - `sme_db_oauth_start` → Browser → Callback speichert Hinweis für `SME_DB_REFRESH_TOKEN`
-   - `sme_db_probe_auth` → `sme_db_list_accounts`
-5. **finAPI:** Client-Credentials + User → `finapi_probe_auth`.
-6. **Better Payment:** API keys + HTTPS origin → `create_payment_link` mit `wero` oder `pay_by_bank`.
+Guide the user through Hausbank-Agent connectivity. Do this once unless they ask to reconfigure.
 
-Hinweis: SME Deutsche Bank (`api.db.com`) ist **nicht** CB-Connect (`baas.db.com`).
+## Steps
+
+1. Confirm the **HausbankAgent** MCP connector is available (OAuth / Entra). If missing, point them to Connect URL `https://hausbank-plus-mcp.vercel.app/api/mcp` or Plugin MCP install.
+2. Call `hausbank_agent_probe_auth` — report env/token health without secrets.
+3. Call `hausbank_agent_list_companies` — help pick the company GUID if more than one.
+4. Call `hausbank_agent_get_setup` — summarize setup state (certificates, secrets present/missing; never print secret values).
+5. If setup is incomplete, walk through only what is missing:
+   - `hausbank_agent_update_setup`
+   - `hausbank_agent_set_client_secret` / `set_certificate` / `set_certificate_password` as needed
+6. Optional PSD2 Multi-Banking: `hausbank_agent_finapi_create_connector` → auth page URL → `finapi_load_accounts` after the user completes bank login in the browser (~9,200 EU banks via PSD2).
+7. Finish with a short checklist: auth OK, company selected, accounts visible via `hausbank_agent_list_accounts`.
+
+## Rules
+
+- Never invent credentials or company IDs.
+- Never call `hausbank_agent_send_payment_to_bank` or Starne payment-link tools.
+- After a successful first setup, do not re-run the full flow unless the user asks.

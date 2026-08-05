@@ -1,7 +1,7 @@
 {
   "name": "HausbankAgent",
-  "version": "0.5.0",
-  "description": "HausbankAgent — finAPI und Hausbank-Agent MCP für Claude (Konten, Zahlungen, Open Banking).",
+  "version": "0.7.0",
+  "description": "HausbankAgent erschließt vor allem Deutsche-Bank-Fähigkeiten und additiv über einen PSD2-Connector rund 9.200 europäische Banken. Die Embedded Banking App ist das Multi-Banking-Gehirn (Kontoauszüge, Kontodaten, Zahlungsprozesse); dieses Plugin hilft Claude, den Konnektor bestmöglich zu nutzen — Setup, Dashboard, Kreditoren/Debitoren, Payment Drafts inkl. Freigabe, SWIFT/UETR. Bankinitiierung bleibt in der App.",
   "author": {
     "name": "mbdev4F"
   },
@@ -10,14 +10,15 @@
   "license": "MIT",
   "keywords": [
     "banking",
-    "deutsche-bank",
-    "cb-connect",
     "sme",
-    "biz-banking",
-    "finapi",
-    "better-payment",
-    "wero",
-    "pay-by-bank",
+    "hausbank-agent",
+    "deutsche-bank",
+    "psd2",
+    "multi-banking",
+    "payment-drafts",
+    "swift",
+    "g4c",
+    "uetr",
     "mcp"
   ]
 }

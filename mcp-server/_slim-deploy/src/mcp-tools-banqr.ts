@@ -144,12 +144,13 @@ export const banqrBcTools: ToolDef[] = [
   },
   {
     name: "hausbank_agent_finapi_create_connector",
-    description: "Create openBankingConnectors (finAPI) setup row in Hausbank-Agent.",
+    description:
+      "Create PSD2 Open Banking connector setup row in Hausbank-Agent (~9,200 EU banks).",
     inputSchema: { type: "object", properties: { body, companyId } },
   },
   {
     name: "hausbank_agent_finapi_get_auth_page_url",
-    description: "Get Open Banking auth page URL for a connector.",
+    description: "Get PSD2 Open Banking auth page URL for a connector.",
     inputSchema: {
       type: "object",
       properties: {

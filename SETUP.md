@@ -1,4 +1,4 @@
-# Setup / Connector docs
+# Setup / Connector + Plugin
 
 Public docs: https://hausbank-plus-mcp.vercel.app/docs  
 Privacy: https://hausbank-plus-mcp.vercel.app/privacy  
@@ -8,6 +8,41 @@ MCP: https://hausbank-plus-mcp.vercel.app/api/mcp
 
 1. Connect URL above (OAuth / Entra).
 2. Enter Environment + optional Company GUID, then Microsoft login.
+
+## Claude Plugin (Claude Code / Cowork)
+
+Plugin root = this repo (skills, commands, `.mcp.json` → same MCP URL).
+
+**Produkt:** HausbankAgent = Embedded Banking (Deutsche Bank + PSD2 ~9.200 EU-Banken). Das Plugin hilft Claude, diesen Konnektor bestmöglich zu nutzen.
+
+### Local test
+
+```bash
+# from repo root
+claude plugin validate
+claude --plugin-dir .
+```
+
+Slash commands (namespaced): `/HausbankAgent:setup`, `:dashboard`, `:party`, `:pay-draft`, `:uetr`.
+
+### Install from this repo (marketplace)
+
+```text
+/plugin marketplace add mbdev4F/HausbankPlusClaudePlugIn
+/plugin install HausbankAgent@HausbankAgent
+```
+
+Or install by path while developing: `claude --plugin-dir <path-to-this-repo>`.
+
+### Scope
+
+| Claude may | Claude must not |
+| --- | --- |
+| Setup, dashboard, vendors/customers | `send_payment_to_bank` |
+| Payment drafts + approve | Starne payment links |
+| SWIFT UETR / G4C lookup | Claim payment was sent to bank |
+
+Bank initiation stays in the Hausbank product UI.
 
 ## Entra App Registration
 

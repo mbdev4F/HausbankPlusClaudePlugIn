@@ -2,10 +2,7 @@
   "mcpServers": {
     "HausbankAgent": {
       "type": "http",
-      "url": "${HAUSBANK_AGENT_MCP_URL}",
-      "headers": {
-        "Authorization": "Bearer ${HAUSBANK_AGENT_MCP_TOKEN}"
-      }
+      "url": "https://hausbank-plus-mcp.vercel.app/api/mcp"
     }
   }
 }

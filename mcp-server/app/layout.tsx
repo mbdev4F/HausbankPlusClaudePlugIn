@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 
 export const metadata = {
   title: "HausbankAgent",
-  description: "Remote MCP connector: finAPI + Hausbank-Agent",
+  description:
+    "HausbankAgent MCP — Deutsche Bank plus PSD2 Multi-Banking (~9.200 EU-Banken) über die Embedded Banking App",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

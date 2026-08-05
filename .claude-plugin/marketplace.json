@@ -4,13 +4,13 @@
     "name": "mbdev4F"
   },
   "metadata": {
-    "description": "HausbankAgent — finAPI + Hausbank-Agent MCP für Claude"
+    "description": "HausbankAgent — Deutsche Bank plus PSD2 Multi-Banking (~9.200 EU-Banken); Plugin für optimalen Konnektor-Einsatz"
   },
   "plugins": [
     {
       "name": "HausbankAgent",
       "source": "./",
-      "description": "finAPI und Hausbank-Agent (Konten, Zahlungen, Open Banking)."
+      "description": "HausbankAgent: Deutsche-Bank-Fähigkeiten und PSD2-Zugriff auf ca. 9.200 europäische Banken. Die Embedded App bündelt Multi-Banking; das Plugin hilft Claude, den Konnektor bestmöglich zu nutzen."
     }
   ]
 }

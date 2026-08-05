@@ -122,12 +122,13 @@ export const banqrBcTools: ToolDef[] = [
   },
   {
     name: "hausbank_agent_finapi_create_connector",
-    description: "Create openBankingConnectors (finAPI) setup row in Hausbank-Agent.",
+    description:
+      "Create PSD2 Open Banking connector setup row in Hausbank-Agent (~9,200 EU banks).",
     inputSchema: { type: "object", properties: { body, companyId } },
   },
   {
     name: "hausbank_agent_finapi_get_auth_page_url",
-    description: "Get Open Banking auth page URL for a connector.",
+    description: "Get PSD2 Open Banking auth page URL for a connector.",
     inputSchema: {
       type: "object",
       properties: {
@@ -154,7 +155,7 @@ export const banqrBcTools: ToolDef[] = [
   {
     name: "hausbank_agent_starne_payment_link",
     description:
-      "Starne Payment Link: create a customer standalone payment URL via Hausbank-Agent (finAPI handled inside the agent). Recipient = your IBAN. Returns payment link URL from CloudConnector starnePaymentLinks.",
+      "Starne Payment Link: create a customer standalone payment URL via Hausbank-Agent (PSD2 handled inside the agent). Recipient = your IBAN. Returns payment link URL from CloudConnector starnePaymentLinks.",
     inputSchema: {
       type: "object",
       properties: {

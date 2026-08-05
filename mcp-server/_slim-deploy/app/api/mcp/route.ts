@@ -101,10 +101,10 @@ async function handleMessage(message: {
       serverInfo: {
         name: "HausbankAgent",
         title: "HausbankAgent",
-        version: "0.4.0",
+        version: "0.7.0",
       },
       instructions:
-        "HausbankAgent connects to the user's own ERP banking APIs via Microsoft Entra. Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payments, statements, and G4C search. Never say Business Central, DB, or CB-Connect.",
+        "HausbankAgent is the user's Embedded Banking brain: primarily Deutsche Bank capabilities, plus PSD2 access to ~9,200 European banks (multi-banking, statements, account info). Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payment drafts/approval, statements, and G4C/UETR. Never initiate send-to-bank. Never say Business Central, finAPI, or CB-Connect unless the user asks.",
     });
   }
 

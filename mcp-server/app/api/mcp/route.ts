@@ -11,8 +11,10 @@ const mcpHandler = createMcpHandler(
   {
     serverInfo: {
       name: "HausbankAgent",
-      version: "0.3.0",
+      version: "0.7.0",
     },
+    instructions:
+      "HausbankAgent is the user's Embedded Banking brain: primarily Deutsche Bank capabilities, plus PSD2 access to ~9,200 European banks. Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payment drafts/approval, statements, and G4C/UETR. Never initiate send-to-bank. Never say Business Central, finAPI, or CB-Connect unless the user asks.",
   },
   { basePath: "/api" },
 );
