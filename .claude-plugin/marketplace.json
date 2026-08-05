@@ -11,8 +11,8 @@
     {
       "name": "hausbank-agent",
       "source": "./",
-      "version": "0.7.1",
-      "description": "HausbankAgent: Deutsche Bank capabilities plus PSD2 access to ~9200 European banks. The embedded app is the multi-banking brain; this plugin helps Claude use the connector well."
+      "version": "0.7.2",
+      "description": "HausbankAgent: Deutsche Bank plus PSD2 (~9200 EU banks). Setup, dashboard, counterparties, payment drafts, approval, send-to-bank, SWIFT/UETR."
     }
   ]
 }

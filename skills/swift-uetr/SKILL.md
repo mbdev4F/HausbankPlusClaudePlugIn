@@ -23,5 +23,4 @@ Use Hausbank-Agent **Payment Tracker (G4C)** tools. Prefer a **UETR** when the u
 ## Rules
 
 - Never invent UETR statuses or GPI events.
-- Read/search only — no bank initiation.
-- Never call `hausbank_agent_send_payment_to_bank`.
+- Read/search only in this skill — for sending payments use `payment-drafts`.

@@ -104,7 +104,7 @@ async function handleMessage(message: {
         version: "0.7.0",
       },
       instructions:
-        "HausbankAgent is the user's Embedded Banking brain: primarily Deutsche Bank capabilities, plus PSD2 access to ~9,200 European banks (multi-banking, statements, account info). Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payment drafts/approval, statements, and G4C/UETR. Never initiate send-to-bank. Never say Business Central, finAPI, or CB-Connect unless the user asks.",
+        "HausbankAgent is the user's Embedded Banking brain: primarily Deutsche Bank capabilities, plus PSD2 access to ~9,200 European banks (multi-banking, statements, account info). Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payment drafts/approval, send-to-bank, statements, and G4C/UETR. Require explicit user confirmation before send_payment_to_bank. Never say Business Central, finAPI, or CB-Connect unless the user asks.",
     });
   }
 

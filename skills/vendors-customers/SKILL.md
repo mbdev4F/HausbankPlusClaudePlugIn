@@ -29,5 +29,5 @@ If no ERP connector is available, ask the user for the fields or to enable their
 ## Rules
 
 - Do not delete counterparties unless the user explicitly requests it.
-- Do not initiate bank payments. Creating a vendor/customer is master data only.
-- Never call `hausbank_agent_send_payment_to_bank` or Starne tools.
+- Creating a vendor/customer is master data only (not a bank send).
+- Do not use Starne tools unless the user explicitly asks.

@@ -22,5 +22,4 @@ Guide the user through Hausbank-Agent connectivity. Do this once unless they ask
 ## Rules
 
 - Never invent credentials or company IDs.
-- Never call `hausbank_agent_send_payment_to_bank` or Starne payment-link tools.
 - After a successful first setup, do not re-run the full flow unless the user asks.

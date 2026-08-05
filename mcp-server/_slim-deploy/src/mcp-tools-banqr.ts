@@ -518,6 +518,16 @@ export const banqrBcTools: ToolDef[] = [
     },
   },
   {
+    name: "hausbank_agent_send_payment_to_bank",
+    description:
+      "Submit / send an approved payment to the bank (Hausbank-Agent bound action Microsoft.Nav.sendToBank). Destructive — require explicit user confirmation first.",
+    inputSchema: {
+      type: "object",
+      properties: { paymentId: { type: "string" }, body, companyId },
+      required: ["paymentId"],
+    },
+  },
+  {
     name: "hausbank_agent_update_payment_status_from_bank",
     description: "Refresh payment status from bank.",
     inputSchema: {

@@ -7,10 +7,10 @@
 - Setup / Auth (Entra)
 - Bank-Dashboard (Konten, Salden, Umsätze)
 - Vendors & Customers (Stammdaten, auch aus ERP-Konnektor)
-- Payment Drafts + Freigabe (`approve`)
+- Payment Drafts + Freigabe (`approve`) + **Send to Bank** (`send_payment_to_bank`)
 - SWIFT / UETR über Payment Tracker (G4C)
 
-Bankinitiierung (`send_payment_to_bank`) und Starne Payment Links sind **nicht** Teil des Claude-Scopes.
+Starne Payment Links sind **nicht** Teil des Standard-Plugin-Scopes (API noch nicht produktiv).
 
 ## Architektur
 
@@ -33,7 +33,7 @@ Weitere Legacy-Konnektoren im Code unter `mcp-server/src/` sind nicht der Live-P
 | `setup` | Einmalige Einrichtung |
 | `bank-dashboard` | Salden + Umsätze |
 | `vendors-customers` | Kreditoren / Debitoren |
-| `payment-drafts` | Entwürfe + Freigabe (kein Bank-Send) |
+| `payment-drafts` | Entwürfe + Freigabe + Send to Bank |
 | `swift-uetr` | Internationale Zahlung per UETR / G4C |
 
 ## Schnellstart MCP

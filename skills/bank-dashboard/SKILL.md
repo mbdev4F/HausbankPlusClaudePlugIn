@@ -22,4 +22,3 @@ When the user asks for a bank dashboard (or balances / recent activity), build a
 
 - Read-only. Do not create payments or change master data unless the user asks.
 - Never invent balances or transactions.
-- Never call `hausbank_agent_send_payment_to_bank`.

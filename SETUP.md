@@ -38,13 +38,13 @@ Or install by path while developing: `claude --plugin-dir <path-to-this-repo>`.
 
 ### Scope
 
-| Claude may | Claude must not |
+| Claude may | Notes |
 | --- | --- |
-| Setup, dashboard, vendors/customers | `send_payment_to_bank` |
-| Payment drafts + approve | Starne payment links |
-| SWIFT UETR / G4C lookup | Claim payment was sent to bank |
+| Setup, dashboard, vendors/customers | Stammdaten + Lesen |
+| Payment drafts, approve, **send to bank** | `send_payment_to_bank` only after explicit user confirmation |
+| SWIFT UETR / G4C lookup | Read/search |
 
-Bank initiation stays in the Hausbank product UI.
+Starne payment links are out of scope unless explicitly requested.
 
 ## Entra App Registration
 
@@ -59,4 +59,5 @@ Bank initiation stays in the Hausbank product UI.
 
 - Docs + Privacy URLs above (bilingual examples on /docs)
 - Tools have `title` + `readOnlyHint` / `destructiveHint`
-- `send_payment_to_bank` and payment-link tools are **not** exposed (directory policy)
+- `send_payment_to_bank` is exposed (destructive — confirm with user)
+- Starne payment-link tools remain out of default plugin workflows
