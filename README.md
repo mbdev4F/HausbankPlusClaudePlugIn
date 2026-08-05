@@ -9,6 +9,7 @@
 - Vendors & Customers (Stammdaten, auch aus ERP-Konnektor)
 - Payment Drafts + Freigabe (`approve`) + **Send to Bank** (`send_payment_to_bank`)
 - SWIFT / UETR über Payment Tracker (G4C)
+- **Payment Search** — wo ist meine Zahlung? (SWIFT-Netzwerk + SEPA-Status)
 
 Starne Payment Links sind **nicht** Teil des Standard-Plugin-Scopes (API noch nicht produktiv).
 
@@ -35,6 +36,14 @@ Weitere Legacy-Konnektoren im Code unter `mcp-server/src/` sind nicht der Live-P
 | `vendors-customers` | Kreditoren / Debitoren |
 | `payment-drafts` | Entwürfe + Freigabe + Send to Bank |
 | `swift-uetr` | Internationale Zahlung per UETR / G4C |
+| `payment-search` | Wo ist meine Zahlung? SWIFT-Netzwerk + SEPA-Status (Correlation/E2E) |
+
+## Agents
+
+| Agent | Aufgabe |
+| --- | --- |
+| `payment-ops-agent` | Setup, Dashboard, Stammdaten, Drafts / Freigabe / Send to Bank |
+| `payment-search-agent` | Where is my payment — SWIFT-Netzwerk + SEPA-Status |
 
 ## Schnellstart MCP
 

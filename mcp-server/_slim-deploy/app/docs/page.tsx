@@ -72,14 +72,14 @@ const copy = {
         tools: "list/get/create/update_vendor, list/get/create/update_customer",
       },
       {
-        h: "Zahlungen (ERP, ohne Bankversand)",
+        h: "Zahlungen (Draft, Freigabe, Bankversand)",
         prompts: [
           "Zeige offene Zahlungen und deren Status.",
           "Erstelle einen Payment-Entwurf: 250 EUR an Kreditor X, Verwendungszweck Rechnung 1042.",
           "Genehmige die Zahlung mit dieser Payment-ID.",
-          "Öffne die Zahlung wieder, falls sie noch nicht freigegeben werden soll.",
+          "Sende die freigegebene Zahlung an die Bank (Send payment to bank).",
         ],
-        tools: "list/get/create/update/delete/approve/reopen_payment",
+        tools: "list/get/create/update/delete/approve/reopen_payment, send_payment_to_bank",
       },
       {
         h: "Umsätze & Kontoauszüge",
@@ -101,7 +101,7 @@ const copy = {
     ],
     tipTitle: "Tipp",
     tipBody:
-      "Bankversand und Payment-Links sind in dieser Directory-Version absichtlich nicht enthalten. Genehmigen und Pflegen von Payments in eurem ERP ist möglich.",
+      "Payment-Links (Starne) sind optional/ausstehend. Payment Drafts, Freigabe und Send payment to bank (hausbank_agent_send_payment_to_bank) sind verfügbar — Bankversand nur nach ausdrücklicher Bestätigung.",
     whyTitle: "Warum Microsoft Business Central + HausbankAgent?",
     whyLead:
       "Mit Microsoft Business Central in der Azure Cloud betreiben Sie eine hochgesicherte Banking-Umgebung, die ein vollständiges Banking-Erlebnis mit einem durchgängigen API-Stack verbindet — und genau darauf dockt HausbankAgent als MCP an.",
@@ -183,14 +183,14 @@ const copy = {
         tools: "list/get/create/update_vendor, list/get/create/update_customer",
       },
       {
-        h: "Payments (ERP only — no bank send)",
+        h: "Payments (draft, approve, send to bank)",
         prompts: [
           "Show open payments and their status.",
           "Create a payment draft: EUR 250 to vendor X, remittance invoice 1042.",
           "Approve the payment with this payment id.",
-          "Reopen the payment if it should not be released yet.",
+          "Send the approved payment to the bank (Send payment to bank).",
         ],
-        tools: "list/get/create/update/delete/approve/reopen_payment",
+        tools: "list/get/create/update/delete/approve/reopen_payment, send_payment_to_bank",
       },
       {
         h: "Transactions & statements",
@@ -212,7 +212,7 @@ const copy = {
     ],
     tipTitle: "Note",
     tipBody:
-      "Bank send and payment-link tools are intentionally omitted in this Directory build. Approving and maintaining payments inside your ERP remains available.",
+      "Starne payment links are optional/pending. Payment drafts, approval, and Send payment to bank (hausbank_agent_send_payment_to_bank) are available — require explicit confirmation before bank send.",
     whyTitle: "Why Microsoft Business Central + HausbankAgent?",
     whyLead:
       "Running Microsoft Business Central in the Azure cloud gives you a highly secure banking environment that combines a full banking experience with a complete API stack — and HausbankAgent exposes that stack to Claude via MCP.",

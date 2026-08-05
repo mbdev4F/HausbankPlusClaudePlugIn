@@ -4,7 +4,7 @@ export const maxDuration = 60;
 /**
  * Live MCP for Claude Cloud:
  * - Hausbank-Agent tools (hausbank_agent_*)
- * Payment-link / send-to-bank tools are omitted for Connectors Directory policy.
+ * Includes payment drafts, approve, and send-to-bank.
  */
 
 import {

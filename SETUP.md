@@ -23,7 +23,7 @@ claude plugin validate
 claude --plugin-dir .
 ```
 
-Slash commands (namespaced): `/hausbank-agent:setup`, `:dashboard`, `:party`, `:pay-draft`, `:uetr`.
+Slash commands (namespaced): `/hausbank-agent:setup`, `:dashboard`, `:party`, `:pay-draft`, `:uetr`, `:payment-search`.
 
 ### Install from this repo (marketplace)
 
@@ -43,6 +43,7 @@ Or install by path while developing: `claude --plugin-dir <path-to-this-repo>`.
 | Setup, dashboard, vendors/customers | Stammdaten + Lesen |
 | Payment drafts, approve, **send to bank** | `send_payment_to_bank` only after explicit user confirmation |
 | SWIFT UETR / G4C lookup | Read/search |
+| Payment search (SWIFT network + SEPA status) | `payment-search-agent` / `:payment-search` |
 
 Starne payment links are out of scope unless explicitly requested.
 

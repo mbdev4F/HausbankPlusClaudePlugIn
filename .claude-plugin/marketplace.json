@@ -12,7 +12,7 @@
       "name": "hausbank-agent",
       "source": "./",
       "version": "0.7.2",
-      "description": "HausbankAgent: Deutsche Bank plus PSD2 (~9200 EU banks). Setup, dashboard, counterparties, payment drafts, approval, send-to-bank, SWIFT/UETR."
+      "description": "HausbankAgent: Deutsche Bank plus PSD2 (~9200 EU banks). Setup, dashboard, counterparties, payment drafts, approval, send-to-bank, SWIFT/UETR, payment search."
     }
   ]
 }

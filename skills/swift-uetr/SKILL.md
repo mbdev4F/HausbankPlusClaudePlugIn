@@ -1,6 +1,6 @@
 ---
 name: swift-uetr
-description: Look up international SWIFT payments via Hausbank-Agent Payment Tracker (G4C) using a UETR or search window. Use when the user provides a UETR / SWIFT tracking id or asks about international payment status.
+description: Look up international SWIFT payments via Hausbank-Agent Payment Tracker (G4C) using a UETR or search window. Use when the user provides a UETR / SWIFT tracking id. For broader "where is my payment" (SWIFT + SEPA status) prefer the payment-search skill / payment-search-agent.
 ---
 
 # SWIFT / UETR (G4C)
