@@ -1,6 +1,6 @@
 # Setup / Connector docs
 
-Public docs (live): https://hausbank-plus-mcp.vercel.app/docs  
+Public docs: https://hausbank-plus-mcp.vercel.app/docs  
 Privacy: https://hausbank-plus-mcp.vercel.app/privacy  
 MCP: https://hausbank-plus-mcp.vercel.app/api/mcp
 
@@ -18,9 +18,8 @@ MCP: https://hausbank-plus-mcp.vercel.app/api/mcp
 4. Vercel: `ENTRA_CLIENT_ID`, `ENTRA_CLIENT_SECRET`, `OAUTH_SIGNING_SECRET`,  
    `HAUSBANK_AGENT_PUBLIC_ORIGIN=https://hausbank-plus-mcp.vercel.app`
 
-## Directory submission notes
+## Directory notes
 
-- Docs + Privacy URLs above
-- Every tool has `title` + `readOnlyHint` / `destructiveHint`
-- Catch-all request split into `hausbank_agent_read_request` / `hausbank_agent_write_request`
-- Anthropic policy may reject connectors that **transfer money** — payment send / Starne Payment Link may need review discussion
+- Docs + Privacy URLs above (bilingual examples on /docs)
+- Tools have `title` + `readOnlyHint` / `destructiveHint`
+- `send_payment_to_bank` and payment-link tools are **not** exposed (directory policy)
