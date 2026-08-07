@@ -13,6 +13,15 @@
 
 Starne Payment Links sind **nicht** Teil des Standard-Plugin-Scopes (API noch nicht produktiv).
 
+## Claude Cloud Connector
+
+1. Connect URL: `https://hausbank-plus-mcp.vercel.app/api/mcp` (OAuth / **Entra** → Business Central).
+2. Environment + optional Company GUID, then Microsoft login.
+
+**BizBank Claude Connector** (Tokens nur im Client): separates Projekt [`BizBankingConnect`](../BizBankingConnect).
+
+Details: [SETUP.md](SETUP.md).
+
 ## Architektur
 
 | Schicht | Rolle |
@@ -32,7 +41,7 @@ Weitere Legacy-Konnektoren im Code unter `mcp-server/src/` sind nicht der Live-P
 | Skill | Aufgabe |
 | --- | --- |
 | `setup` | Einmalige Einrichtung |
-| `bank-dashboard` | Salden + Umsätze |
+| `bank-dashboard` | Salden + Umsätze als HTML-Dashboard |
 | `vendors-customers` | Kreditoren / Debitoren |
 | `payment-drafts` | Entwürfe + Freigabe + Send to Bank |
 | `swift-uetr` | Internationale Zahlung per UETR / G4C |

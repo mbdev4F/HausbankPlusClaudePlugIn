@@ -36,7 +36,10 @@ export function validateSmeDbUserSession(
   const clientErr = validateSmeDbClientCredentials(creds);
   if (clientErr) return clientErr;
   if (!creds.refreshToken) {
-    return "SME_DB_REFRESH_TOKEN fehlt — OAuth mit sme_db_oauth_start / Callback ausführen und Refresh-Token in die Env speichern.";
+    return (
+      "SME_DB_REFRESH_TOKEN fehlt. Für Claude Custom Connectors mit Token nur im Client: " +
+      "separates Projekt BizBankingConnect nutzen. Legacy: sme_db_oauth_start / Callback."
+    );
   }
   return null;
 }

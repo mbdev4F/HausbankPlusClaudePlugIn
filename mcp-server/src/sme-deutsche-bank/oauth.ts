@@ -26,6 +26,7 @@ export function basicAuthHeader(clientId: string, clientSecret: string): string 
   return `Basic ${Buffer.from(`${clientId}:${clientSecret}`, "utf8").toString("base64")}`;
 }
 
+/** Request-scoped only; not persisted. Prefer BizBankingConnect for Claude OAuth. */
 const tokenCacheState: { token: string; expiresAt: number } = {
   token: "",
   expiresAt: 0,
@@ -44,7 +45,6 @@ export type SmeDbAuthorizeProbeResult =
   | { ok: true }
   | { ok: false; code: string; detail: string };
 
-/** Kurztest vor dem Browser-Redirect — vermeidet rohe XML-Fehlerseiten der DB. */
 export async function probeSmeDbAuthorizeReachability(
   authorizeUrl: string
 ): Promise<SmeDbAuthorizeProbeResult> {

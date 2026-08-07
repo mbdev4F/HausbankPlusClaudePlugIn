@@ -1,5 +1,11 @@
 import { createMcpHandler } from "mcp-handler";
 import { registerTools } from "@/src/tools";
+import {
+  oauthEnabled,
+  parseBearerSession,
+  unauthorizedMcpResponse,
+} from "@/src/oauth/adapter";
+import { runWithHausbankSession } from "@/src/oauth/session";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -14,41 +20,32 @@ const mcpHandler = createMcpHandler(
       version: "0.7.0",
     },
     instructions:
-      "HausbankAgent is the user's Embedded Banking brain: primarily Deutsche Bank capabilities, plus PSD2 access to ~9,200 European banks. Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payment drafts/approval, send-to-bank, statements, and G4C/UETR. Require explicit user confirmation before send_payment_to_bank. Never say Business Central, finAPI, or CB-Connect unless the user asks.",
+      "HausbankAgent is the user's Embedded Banking brain: primarily Deutsche Bank capabilities, plus PSD2 access to ~9,200 European banks. Prefer named hausbank_agent_* tools for companies, accounts, vendors, customers, payment drafts/approval, send-to-bank, statements, and G4C/UETR. Require explicit user confirmation before send_payment_to_bank. Never say Business Central, finAPI, or CB-Connect unless the user asks. For direct BizBank/SME API OAuth use the separate BizBankingConnect connector.",
   },
   { basePath: "/api" },
 );
 
-function unauthorized() {
-  return Response.json({ error: "unauthorized" }, { status: 401 });
-}
-
 /**
- * Claude.ai custom connectors speak OAuth by default. Request-header / Bearer
- * auth is beta and missing in many accounts — a 401 makes Claude demand a
- * Client ID. Allow unauthenticated access so Cloud can connect (auth type
- * "none"). If a Bearer token *is* sent, it must match CB_CONNECT_MCP_TOKEN.
- * Bank secrets stay in server env (CBCON_*), not in this gate.
+ * When Entra OAuth is configured: require Claude Bearer session (BC).
+ * Otherwise optional static MCP token (legacy).
+ * BizBank Claude OAuth lives in the separate BizBankingConnect project.
  */
-function authorize(req: Request): Response | null {
+async function handler(req: Request) {
+  if (oauthEnabled()) {
+    const session = parseBearerSession(req);
+    if (!session) {
+      return unauthorizedMcpResponse();
+    }
+    return runWithHausbankSession(session, () => mcpHandler(req));
+  }
+
   const token =
     process.env.CB_CONNECT_MCP_TOKEN || process.env.HAUSBANK_PLUS_MCP_TOKEN;
   const auth = req.headers.get("authorization") ?? "";
-
-  if (!auth) {
-    return null;
+  if (auth && token && auth !== `Bearer ${token}`) {
+    return Response.json({ error: "unauthorized" }, { status: 401 });
   }
 
-  if (token && auth !== `Bearer ${token}`) {
-    return unauthorized();
-  }
-
-  return null;
-}
-
-async function handler(req: Request) {
-  const denied = authorize(req);
-  if (denied) return denied;
   return mcpHandler(req);
 }
 

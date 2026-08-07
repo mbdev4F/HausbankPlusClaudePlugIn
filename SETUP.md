@@ -4,10 +4,12 @@ Public docs: https://hausbank-plus-mcp.vercel.app/docs
 Privacy: https://hausbank-plus-mcp.vercel.app/privacy  
 MCP: https://hausbank-plus-mcp.vercel.app/api/mcp
 
-## Claude Cloud Connector
+## Claude Cloud Connector (HausbankAgent / Business Central)
 
-1. Connect URL above (OAuth / Entra).
+1. Connect URL above (OAuth / **Entra**).
 2. Enter Environment + optional Company GUID, then Microsoft login.
+
+BizBank mit Tokens nur im Claude-Client ist **nicht** dieser Connector — siehe separates Projekt **BizBankingConnect** (`c:\banqr_dev\BizBankingConnect`).
 
 ## Claude Plugin (Claude Code / Cowork)
 

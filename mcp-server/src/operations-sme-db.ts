@@ -1,6 +1,6 @@
 /**
- * MCP operations for SME Deutsche Bank Connector
- * (HealthFlow/Cash365 Deutsche Bank Biz-Banking → renamed).
+ * MCP operations for SME Deutsche Bank Connector (legacy env-refresh path).
+ * For Claude Custom Connector with tokens only in Claude: use BizBankingConnect.
  */
 
 import {
@@ -59,6 +59,9 @@ export async function smeDbProbeAuth() {
   return {
     ok: accessTokenOk || (!clientErr && !userErr),
     connector: CONNECTOR_DISPLAY_NAME,
+    note:
+      "Claude Custom Connector mit Tokens nur im Client: separates Projekt BizBankingConnect. " +
+      "Dieser Pfad ist Legacy (SME_DB_REFRESH_TOKEN in Server-Env).",
     legacyNames: [
       "Deutsche Bank Biz-Banking",
       "Business Connector",
@@ -97,7 +100,9 @@ export async function smeDbOauthStart(args?: {
     redirectUri: started.redirectUri,
     state: started.state,
     probe,
-    note: "Authorize-URL im Browser öffnen. Nach Callback Refresh-Token als SME_DB_REFRESH_TOKEN speichern (Callback-Seite zeigt ihn einmalig).",
+    note:
+      "Legacy. Für Claude Connectors ohne MCP-Token-Store: BizBankingConnect. " +
+      "Sonst Authorize-URL öffnen und Refresh-Token als SME_DB_REFRESH_TOKEN setzen.",
   };
 }
 
@@ -117,8 +122,8 @@ export async function smeDbOauthComplete(args: {
     expiresIn: tokens.expires_in ?? null,
     scope: tokens.scope ?? null,
     message: tokens.refresh_token
-      ? "Bitte SME_DB_REFRESH_TOKEN mit dem zurückgegebenen refreshToken setzen (wird vom MCP nicht persistiert)."
-      : "Kein neuer refresh_token in der Antwort — bestehenden Token behalten.",
+      ? "Legacy: SME_DB_REFRESH_TOKEN setzen. Bevorzugt: BizBankingConnect (Tokens nur in Claude)."
+      : "Kein neuer refresh_token — bestehenden Token behalten.",
   };
 }
 

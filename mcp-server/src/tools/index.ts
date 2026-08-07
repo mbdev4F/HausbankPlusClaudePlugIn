@@ -375,7 +375,7 @@ export function registerTools(server: McpServer) {
 
   server.tool(
     "sme_db_probe_auth",
-    "Diagnostics: SME Deutsche Bank Connector env + OAuth refresh (no secrets returned).",
+    "Diagnostics: SME Deutsche Bank Connector env + OAuth refresh (legacy). Prefer separate BizBankingConnect for Claude OAuth.",
     {},
     readOnly,
     async () => run(() => sme.smeDbProbeAuth())
@@ -383,7 +383,7 @@ export function registerTools(server: McpServer) {
 
   server.tool(
     "sme_db_oauth_start",
-    "Start OAuth for SME Deutsche Bank Connector. Returns authorizeUrl for browser login.",
+    "Legacy OAuth start for SME Deutsche Bank (env refresh). Prefer BizBankingConnect Claude connector.",
     {
       redirectUri: z.string().url().optional(),
       probe: z
@@ -397,7 +397,7 @@ export function registerTools(server: McpServer) {
 
   server.tool(
     "sme_db_oauth_complete",
-    "Exchange OAuth authorization code for tokens. Returns refreshToken to store as SME_DB_REFRESH_TOKEN.",
+    "Legacy: exchange code; may return refreshToken for SME_DB_REFRESH_TOKEN. Prefer BizBankingConnect.",
     {
       code: z.string(),
       redirectUri: z.string().url().optional(),

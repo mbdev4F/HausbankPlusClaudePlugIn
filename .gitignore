@@ -36,3 +36,6 @@ logs/
 
 # Local API dumps (may contain PII)
 docs/api-specs/_private/
+
+# Generated bank dashboards (live balances / PII)
+dashboards/

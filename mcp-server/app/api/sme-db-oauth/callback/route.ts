@@ -7,8 +7,8 @@ import { CONNECTOR_DISPLAY_NAME } from "@/src/sme-deutsche-bank/shared";
 export const runtime = "nodejs";
 
 /**
- * OAuth callback for SME Deutsche Bank Connector.
- * Shows refresh_token once so the operator can store SME_DB_REFRESH_TOKEN.
+ * Legacy OAuth callback for SME Deutsche Bank (env refresh path).
+ * Prefer the separate BizBankingConnect project for Claude Custom Connectors.
  */
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -26,8 +26,8 @@ export async function GET(request: Request) {
 
   if (!code) {
     return htmlPage(
-      "SME Deutsche Bank OAuth",
-      "<p>Erwarte Query-Parameter <code>code</code> von der Deutschen Bank.</p>"
+      "SME Deutsche Bank OAuth (Legacy)",
+      "<p>Erwarte Query-Parameter <code>code</code>. Für Claude Custom Connectors: Projekt <strong>BizBankingConnect</strong>.</p>"
     );
   }
 
@@ -37,12 +37,12 @@ export async function GET(request: Request) {
     const refresh = tokens.refresh_token?.trim() ?? "";
 
     return htmlPage(
-      `${CONNECTOR_DISPLAY_NAME} — verbunden`,
+      `${CONNECTOR_DISPLAY_NAME} — verbunden (Legacy)`,
       `
       <p>OAuth erfolgreich (state: <code>${escapeHtml(state ?? "—")}</code>).</p>
-      <p>Bitte den Refresh-Token als <code>SME_DB_REFRESH_TOKEN</code> in der Server-Env speichern:</p>
-      <pre>${escapeHtml(refresh || "(kein refresh_token in der Antwort)")}</pre>
-      <p>Access-Token ist kurzlebig und wird nicht angezeigt. Danach <code>sme_db_probe_auth</code> aufrufen.</p>
+      <p>Legacy: Refresh-Token als <code>SME_DB_REFRESH_TOKEN</code> (nur Server-Scripts):</p>
+      <pre>${escapeHtml(refresh || "(kein refresh_token)")}</pre>
+      <p>Claude Custom Connector ohne MCP-Token-Store: separates Projekt <strong>BizBankingConnect</strong>.</p>
       `
     );
   } catch (e) {

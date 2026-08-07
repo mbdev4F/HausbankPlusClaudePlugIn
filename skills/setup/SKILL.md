@@ -1,11 +1,13 @@
 ---
 name: setup
-description: One-time Hausbank-Agent MCP setup — auth, company, roles/rights, and connector health. Use when the user installs the plugin, connects for the first time, or asks to configure banking access.
+description: One-time Hausbank-Agent MCP setup — Entra/BC auth, company, roles/rights, and connector health. Use when the user installs the plugin, connects for the first time, or asks to configure banking access.
 ---
 
 # Setup (once)
 
-Guide the user through Hausbank-Agent connectivity. Do this once unless they ask to reconfigure.
+Guide the user through Hausbank-Agent connectivity (Entra → Business Central). Do this once unless they ask to reconfigure.
+
+For **Deutsche Bank BizBank** with Claude OAuth (tokens only in Claude), point them to the separate **BizBankingConnect** project — not this connector.
 
 ## Steps
 
